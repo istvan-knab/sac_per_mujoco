@@ -41,3 +41,8 @@ class Actor(nn.Module):
         log_probs = log_probs.sum(1, keepdim=True)
 
         return action, log_probs
+
+    def select_best_action(self, state):
+        mu, sigma = self.forward(state)
+        action = mu
+        return action
