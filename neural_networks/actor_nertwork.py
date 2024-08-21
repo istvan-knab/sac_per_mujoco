@@ -35,7 +35,6 @@ class Actor(nn.Module):
         mu, sigma = self.forward(state)
         probabilities = Normal(mu, sigma)
         actions = probabilities.sample()
-        #TODO: Here comes max action
         action = torch.tanh(actions) * self.env.action_space.high
         log_probs = probabilities.log_prob(actions)
         log_probs -= torch.log(1 - action.pow(2) + self.reparam_noise)
