@@ -36,7 +36,7 @@ def rl_loop():
             agent.update_policy()
         logger.step(episode_reward, 0, 0, config)
 
-    torch.save(agent.actor, "models" + "/" + str(logger.run_id))
+    torch.save(agent.actor, "models" + "/" + str(logger.run_id) + ".pth")
 
 
 if __name__ == "__main__":

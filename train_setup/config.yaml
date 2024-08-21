@@ -1,5 +1,5 @@
-ENVIRONMENT : "Ant-v5"
-RENDER_MODE : "rgb_array"
+ENVIRONMENT : "Humanoid-v5"
+RENDER_MODE : "human"
 EPISODE_STOP : 1000
 EPISODES : 10
 LR : 0.0003
