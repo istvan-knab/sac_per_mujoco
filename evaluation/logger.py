@@ -22,6 +22,7 @@ class Logger:
         self.run["DEVICE"] = config["DEVICE"]
         self.run["PER_ALPHA"] = config["PER_ALPHA"]
         self.run["BETA"] = config["BETA"]
+        self.run_id = self.run["sys/id"].fetch()
         self.start_training(config)
 
 
@@ -29,6 +30,7 @@ class Logger:
         print("Starting training------------------")
         print(f'Train Mode: {config["TRAIN_MODE"]}')
         print(f'Environment: {config["ENVIRONMENT"]}')
+        print(f'Neptune ID : {self.run_id}')
         print(f'Device : {config["DEVICE"]}')
         print(f"Learning Rate: {config['LR']}")
         print(f"Discount Factor: {config['DISCOUNT_FACTOR']}")
