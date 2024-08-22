@@ -15,8 +15,11 @@ def rl_loop():
     with open('train_setup/config.yaml', 'r') as file:
         config = yaml.safe_load(file)
     seed_all(config['SEED'])
-    env = gym.make(config["ENVIRONMENT"], render_mode=config["RENDER_MODE"],
-                   max_episode_steps=config["EPISODE_STOP"])
+    if config['RENDER'] == 'yes':
+        env = gym.make(config["ENVIRONMENT"],render_mode = config["RENDER_MODE"],
+                       max_episode_steps= config["EPISODE_STOP"])
+    else:
+        env = gym.make(config["ENVIRONMENT"], max_episode_steps=config["EPISODE_STOP"])
     env = EnvWrapper(env)
     agent = SoftActorCritic(config, env)
     logger = Logger(env, config)
@@ -31,7 +34,7 @@ def rl_loop():
         while not done:
             action, _ = agent.actor.sample_action(state)
             next_state, reward, terminated, truncated, info = env.step(action)
-            if episode % 50 == 0:
+            if config['RENDER'] == 'yes':
                 env.render()
             if terminated or truncated:
                 done = torch.tensor(True).unsqueeze(0).unsqueeze(0)

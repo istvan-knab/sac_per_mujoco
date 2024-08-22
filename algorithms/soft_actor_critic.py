@@ -48,8 +48,8 @@ class SoftActorCritic:
 
         q1 = self.critic_1(state, action)
         q2 = self.critic_2(state, action)
-        critic_1_loss = F.mse_loss(q1, q_target)
-        critic_2_loss = F.mse_loss(q2, q_target)
+        critic_1_loss = F.mse_loss(q1, q_target.float())
+        critic_2_loss = F.mse_loss(q2, q_target.float())
 
         self.critic_1_optimizer.zero_grad()
         critic_1_loss.backward()
@@ -63,7 +63,7 @@ class SoftActorCritic:
         new_action, log_prob = self.actor(state)
         q1_new = self.critic_1(state, new_action)
         q2_new = self.critic_2(state, new_action)
-        log_prob = torch.clamp(log_prob, min=1e-10)
+        log_prob = torch.clamp(log_prob, min=1e-10).float()
         actor_loss = (self.config["ENTROPY_COEFFICIENT"] * log_prob - torch.min(q1_new, q2_new)).mean()
 
         self.actor_optimizer.zero_grad()
