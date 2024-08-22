@@ -44,15 +44,16 @@ class Logger:
         print("Episode reward:", reward)
         print("Epsilon:       ", epsilon)
 
-    def neptune_log(self, reward, epsilon, loss):
+    def neptune_log(self,reward, c_1_loss,c_2_loss, a_loss):
         self.run["train/reward"].append(reward)
-        self.run["train/epsilon"].append(epsilon)
-        self.run["train/loss"].append(loss)
+        self.run["train/critic_1_loss"].append(c_1_loss)
+        self.run["train/critic_2_loss"].append(c_2_loss)
+        self.run["train/actor_loss"].append(a_loss)
 
 
-    def step(self, reward, epsilon, loss, config):
+    def step(self, reward, c_1_loss,c_2_loss, a_loss, config):
 
-        self.neptune_log(reward, epsilon, loss)
+        self.neptune_log(reward, c_1_loss,c_2_loss, a_loss)
         self.run["train/algorithm"] = "SAC"
         self.run["train/environment"] = config["ENVIRONMENT"]
         self.run["train/EPISODES"] = config["EPISODES"]

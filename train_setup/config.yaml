@@ -1,4 +1,4 @@
-ENVIRONMENT : "Ant-v5"
+ENVIRONMENT : "BipedalWalker-v3"
 RENDER_MODE : "rgb_array"
 EPISODE_STOP : 1000
 EPISODES : 2000

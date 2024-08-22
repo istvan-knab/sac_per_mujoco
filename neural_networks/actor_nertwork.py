@@ -6,7 +6,7 @@ from torch.distributions import Normal
 from train_setup.seed_all import seed_all
 
 class Actor(nn.Module):
-    def __init__(self, env, hidden_dim=128):
+    def __init__(self, env, hidden_dim=256):
         super(Actor, self).__init__()
         self.fc1 = nn.Linear(env.observation_space.shape[0], hidden_dim)
         self.fc2 = nn.Linear(hidden_dim, hidden_dim)

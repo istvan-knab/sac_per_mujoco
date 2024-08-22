@@ -25,7 +25,9 @@ def rl_loop():
         state = env.reset()
         done = torch.tensor(False).unsqueeze(0).unsqueeze(0)
         episode_reward = 0
-        episode_loss = 0
+        episode_critic_1_loss = 0
+        episode_critic_2_loss = 0
+        episode_actor_loss = 0
         while not done:
             action, _ = agent.actor.sample_action(state)
             next_state, reward, terminated, truncated, info = env.step(action)
@@ -36,8 +38,11 @@ def rl_loop():
             agent.memory.add_element(state, action, next_state, reward, done)
             state = next_state
             episode_reward += reward
-            agent.update_policy()
-        logger.step(episode_reward, 0, 0, config)
+            critic_1_loss, critic_2_loss, actor_loss = agent.update_policy()
+            episode_critic_1_loss += critic_1_loss
+            episode_critic_2_loss += critic_2_loss
+            episode_actor_loss += actor_loss
+        logger.step(episode_reward, episode_critic_1_loss, episode_critic_2_loss,episode_actor_loss, config)
 
     torch.save(agent.actor, "models" + "/" + str(logger.run_id) + ".pth")
 

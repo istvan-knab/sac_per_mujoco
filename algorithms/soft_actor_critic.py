@@ -36,7 +36,7 @@ class SoftActorCritic:
     def update_policy(self):
 
         if self.memory.__len__() < self.config["BATCH_SIZE"]:
-            return
+            return 0, 0, 0
 
         state, action, next_state, reward, done = self.memory.sample()
         with torch.no_grad():
@@ -49,14 +49,14 @@ class SoftActorCritic:
         q1 = self.critic_1(state, action)
         q2 = self.critic_2(state, action)
         critic_1_loss = F.mse_loss(q1, q_target)
-        critic2_loss = F.mse_loss(q2, q_target)
+        critic_2_loss = F.mse_loss(q2, q_target)
 
         self.critic_1_optimizer.zero_grad()
         critic_1_loss.backward()
         self.critic_1_optimizer.step()
 
         self.critic_2_optimizer.zero_grad()
-        critic2_loss.backward()
+        critic_2_loss.backward()
         self.critic_2_optimizer.step()
 
         # Update Actor
@@ -75,3 +75,5 @@ class SoftActorCritic:
 
         for param, target_param in zip(self.critic_2.parameters(), self.critic_2_target.parameters()):
             target_param.data.copy_(self.tau * param.data + (1 - self.tau) * target_param.data)
+
+        return critic_1_loss, critic_2_loss, actor_loss
