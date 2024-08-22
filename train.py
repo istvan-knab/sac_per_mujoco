@@ -14,12 +14,13 @@ def check_early_stopping():
 def rl_loop():
     with open('train_setup/config.yaml', 'r') as file:
         config = yaml.safe_load(file)
-    seed_all(config['SEED'])
     if config['RENDER'] == 'yes':
         env = gym.make(config["ENVIRONMENT"],render_mode = config["RENDER_MODE"],
                        max_episode_steps= config["EPISODE_STOP"])
     else:
         env = gym.make(config["ENVIRONMENT"], max_episode_steps=config["EPISODE_STOP"])
+    env.seed(config["SEED"])
+    seed_all(config['SEED'], env)
     env = EnvWrapper(env)
     agent = SoftActorCritic(config, env)
     logger = Logger(env, config)

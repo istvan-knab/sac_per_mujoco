@@ -21,7 +21,7 @@ class SoftActorCritic:
         self.actor_optimizer = optim.Adam(self.actor.parameters(), lr=config["LR"])
         self.critic_1_optimizer = optim.Adam(self.critic_1.parameters(), lr=config["LR"])
         self.critic_2_optimizer = optim.Adam(self.critic_2.parameters(), lr=config["LR"])
-        seed_all(self.config["SEED"])
+        seed_all(self.config["SEED"], env)
 
     def set_memory(self):
 

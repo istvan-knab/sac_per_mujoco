@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from torch.distributions import Normal
 
 class Critic(nn.Module):
-    def __init__(self, env, hidden_dim=64):
+    def __init__(self, env, hidden_dim=128):
         super(Critic, self).__init__()
         self.fc1 = nn.Linear(env.observation_space.shape[0] + env.action_space.shape[0], hidden_dim)
         self.fc2 = nn.Linear(hidden_dim, hidden_dim)

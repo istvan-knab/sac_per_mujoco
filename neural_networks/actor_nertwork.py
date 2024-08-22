@@ -15,12 +15,7 @@ class Actor(nn.Module):
         self.env = env
         self.reparam_noise = 1e-6
         seed = 0
-        seed_all(seed)
-        torch.manual_seed(seed)
-        torch.use_deterministic_algorithms(True)
-        torch.backends.cudnn.deterministic = True
-        self.env.action_space.seed(seed)
-        self.env.observation_space.seed(seed)
+        seed_all(seed, self.env)
 
         # Apply Xavier initialization to all layers
         nn.init.xavier_uniform_(self.fc1.weight)
