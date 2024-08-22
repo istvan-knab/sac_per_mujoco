@@ -10,6 +10,21 @@ class Critic(nn.Module):
         self.fc2 = nn.Linear(hidden_dim, hidden_dim)
         self.q_value = nn.Linear(hidden_dim, 1)
 
+        # Apply Xavier initialization to all layers
+        nn.init.xavier_uniform_(self.fc1.weight)
+        nn.init.xavier_uniform_(self.fc2.weight)
+        nn.init.xavier_uniform_(self.q_value.weight)
+
+        # Optional: Initialize biases to zero
+        nn.init.zeros_(self.fc1.bias)
+        nn.init.zeros_(self.fc2.bias)
+        nn.init.zeros_(self.q_value.bias)
+
+        # Convert all parameters to double precision
+        self.fc1 = self.fc1.to(dtype=torch.float64)
+        self.fc2 = self.fc2.to(dtype=torch.float64)
+        self.q_value = self.q_value.to(dtype=torch.float64)
+
     def forward(self, state, action):
         x = torch.cat([state, action], dim=-1)
         x = F.relu(self.fc1(x))

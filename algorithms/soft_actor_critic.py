@@ -44,7 +44,7 @@ class SoftActorCritic:
             q1_target = self.critic_1_target(next_state, next_action)
             q2_target = self.critic_2_target(next_state, next_action)
             q_target = reward + ~done * self.config["DISCOUNT_FACTOR"] * (
-                        torch.min(q1_target, q2_target) - self.config["LR"] * next_log_prob)
+                        torch.min(q1_target, q2_target) - self.config["ENTROPY_COEFFICIENT"] * next_log_prob)
 
         q1 = self.critic_1(state, action)
         q2 = self.critic_2(state, action)
@@ -63,7 +63,8 @@ class SoftActorCritic:
         new_action, log_prob = self.actor(state)
         q1_new = self.critic_1(state, new_action)
         q2_new = self.critic_2(state, new_action)
-        actor_loss = (self.config["LR"] * log_prob - torch.min(q1_new, q2_new)).mean()
+        log_prob = torch.clamp(log_prob, min=1e-10)
+        actor_loss = (self.config["ENTROPY_COEFFICIENT"] * log_prob - torch.min(q1_new, q2_new)).mean()
 
         self.actor_optimizer.zero_grad()
         actor_loss.backward()

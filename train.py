@@ -8,6 +8,9 @@ from train_setup.seed_all import seed_all, test_seed
 from algorithms.soft_actor_critic import SoftActorCritic
 from evaluation.logger import Logger
 from train_setup.env_wrapper import EnvWrapper
+
+def check_early_stopping():
+    pass
 def rl_loop():
     with open('train_setup/config.yaml', 'r') as file:
         config = yaml.safe_load(file)

@@ -22,6 +22,21 @@ class Actor(nn.Module):
         self.env.action_space.seed(seed)
         self.env.observation_space.seed(seed)
 
+        # Apply Xavier initialization to all layers
+        nn.init.xavier_uniform_(self.fc1.weight)
+        nn.init.xavier_uniform_(self.fc2.weight)
+        nn.init.xavier_uniform_(self.mean.weight)
+        nn.init.xavier_uniform_(self.std.weight)
+        # Optional: Initialize biases to zero
+        nn.init.zeros_(self.fc1.bias)
+        nn.init.zeros_(self.fc2.bias)
+        nn.init.zeros_(self.mean.bias)
+        nn.init.zeros_(self.std.bias)
+        # Convert all parameters to double precision
+        self.fc1 = self.fc1.to(dtype=torch.float64)
+        self.fc2 = self.fc2.to(dtype=torch.float64)
+        self.mean = self.mean.to(dtype=torch.float64)
+        self.std = self.std.to(dtype=torch.float64)
 
     def forward(self, state):
         x = F.relu(self.fc1(state))
@@ -29,6 +44,7 @@ class Actor(nn.Module):
         mean = self.mean(x)
         std = self.std(x)
         std = F.softplus(std) + 1e-6 # Limit log_std to stabilize learning
+
         return mean, std
 
     def sample_action(self, state):
