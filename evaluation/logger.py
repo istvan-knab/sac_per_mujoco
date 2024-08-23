@@ -65,6 +65,7 @@ class Logger:
         self.run["train/DEVICE"] = config["DEVICE"]
         self.run["train/PER_ALPHA"] = config["PER_ALPHA"]
         self.run["train/BETA"] = config["BETA"]
+        self.run["train/ENTROPY_COEFFICIENT"] = config["ENTROPY_COEFFICIENT"]
     def set_tqdm(self):
         WHITE = '\033[97m'
         RESET = '\033[0m'
