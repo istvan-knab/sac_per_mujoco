@@ -1,15 +1,20 @@
+import numpy as np
 import yaml
 import torch
 from tqdm import tqdm
 import gymnasium as gym
+from collections import deque
 
 from train_setup.seed_all import seed_all, test_seed
 from algorithms.soft_actor_critic import SoftActorCritic
 from evaluation.logger import Logger
 from train_setup.env_wrapper import EnvWrapper
 
-def check_early_stopping():
-    pass
+def check_early_stopping(last_steps, stop):
+    if last_steps.mean() >= stop :
+        return True
+    else:
+        return False
 def rl_loop():
     with open('train_setup/config.yaml', 'r') as file:
         config = yaml.safe_load(file)
@@ -22,6 +27,7 @@ def rl_loop():
     env = EnvWrapper(env)
     agent = SoftActorCritic(config, env)
     logger = Logger(env, config)
+    last_steps = deque([], maxlen=10)
     for episode in tqdm(range(config["EPISODES"]), desc='Training Process',
                         bar_format=logger.set_tqdm(), colour='white'):
         state = env.reset()
@@ -48,7 +54,11 @@ def rl_loop():
             episode_critic_1_loss += critic_1_loss
             episode_critic_2_loss += critic_2_loss
             episode_actor_loss += actor_loss
-        logger.step(episode_reward, episode_critic_1_loss, episode_critic_2_loss,episode_actor_loss, config)
+        last_steps.append(episode_reward)
+        logger.step(episode_reward, episode_critic_1_loss, episode_critic_2_loss, episode_actor_loss, config, step)
+        break_flag = check_early_stopping(np.array(last_steps), config['EARLY_STOP'])
+        if break_flag:
+            break
 
     torch.save(agent.actor, "models" + "/" + str(logger.run_id) + ".pth")
 

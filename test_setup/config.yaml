@@ -1,0 +1,3 @@
+ENVIRONMENT : "InvertedDoublePendulum-v5"
+model: "SACPERM-284.pth"
+EPISODE_STOP: 1000

@@ -22,6 +22,7 @@ class Logger:
         self.run["DEVICE"] = config["DEVICE"]
         self.run["PER_ALPHA"] = config["PER_ALPHA"]
         self.run["BETA"] = config["BETA"]
+        self.run["train/ENTROPY_COEFFICIENT"] = config["ENTROPY_COEFFICIENT"]
         self.run_id = self.run["sys/id"].fetch()
         self.start_training(config)
 
@@ -37,23 +38,17 @@ class Logger:
         print(f'Buffer size: {config["BUFFER_SIZE"]}')
         print(f'Batch size: {config["BATCH_SIZE"]}')
 
-    def console_log(self, reward, epsilon, episode):
-        print('------------------------')
-        print('------------------------')
-        print("Episode:       ", episode)
-        print("Episode reward:", reward)
-        print("Epsilon:       ", epsilon)
-
-    def neptune_log(self,reward, c_1_loss,c_2_loss, a_loss):
+    def neptune_log(self,reward, c_1_loss,c_2_loss, a_loss, episode_step):
         self.run["train/reward"].append(reward)
         self.run["train/critic_1_loss"].append(c_1_loss)
         self.run["train/critic_2_loss"].append(c_2_loss)
         self.run["train/actor_loss"].append(a_loss)
+        self.run["train/episode_step"].append(episode_step)
 
 
-    def step(self, reward, c_1_loss,c_2_loss, a_loss, config):
+    def step(self, reward, c_1_loss,c_2_loss, a_loss, config, episode_step):
 
-        self.neptune_log(reward, c_1_loss,c_2_loss, a_loss)
+        self.neptune_log(reward, c_1_loss,c_2_loss, a_loss, episode_step)
         self.run["train/algorithm"] = "SAC"
         self.run["train/environment"] = config["ENVIRONMENT"]
         self.run["train/EPISODES"] = config["EPISODES"]
@@ -71,3 +66,8 @@ class Logger:
         RESET = '\033[0m'
         tqdm_format = f'{WHITE}{{l_bar}}{{bar}}{{r_bar}}{RESET}'
         return tqdm_format
+
+def console_log(reward):
+    print('------------------------')
+    print('------------------------')
+    print("Episode reward:", reward)
