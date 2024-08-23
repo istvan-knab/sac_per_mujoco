@@ -19,7 +19,6 @@ def rl_loop():
                        max_episode_steps= config["EPISODE_STOP"])
     else:
         env = gym.make(config["ENVIRONMENT"], max_episode_steps=config["EPISODE_STOP"])
-    env.seed(config["SEED"])
     seed_all(config['SEED'], env)
     env = EnvWrapper(env)
     agent = SoftActorCritic(config, env)
@@ -32,11 +31,15 @@ def rl_loop():
         episode_critic_1_loss = 0
         episode_critic_2_loss = 0
         episode_actor_loss = 0
+        step = 0
         while not done:
+            step += 1
             action, _ = agent.actor.sample_action(state)
             next_state, reward, terminated, truncated, info = env.step(action)
             if config['RENDER'] == 'yes':
                 env.render()
+            if step == config["EPISODE_STOP"]:
+                terminated = True
             if terminated or truncated:
                 done = torch.tensor(True).unsqueeze(0).unsqueeze(0)
             agent.memory.add_element(state, action, next_state, reward, done)
