@@ -1,0 +1,9 @@
+PyYAML==6.0.2
+box2d-py==2.3.5
+gymnasium==1.0.0a2
+gymnasium-robotics==1.2.4
+mujoco==2.3.7
+neptune-client==1.11.1
+numpy==2.1.0
+torch==2.4.0
+tqdm==4.66.5
