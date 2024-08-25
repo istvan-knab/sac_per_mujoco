@@ -19,7 +19,7 @@ RUN pip install --upgrade pip==24.2 \
     && pip install -r requirements.txt
 
 # Copy the train.py script into the container
-COPY train.py .
+COPY . .
 
 # Run the train.py script
 CMD ["python", "train.py"]
