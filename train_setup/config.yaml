@@ -13,4 +13,4 @@ DEVICE : "cuda"
 PER_ALPHA: 1.0
 BETA : 0.5
 TAU : 0.005
-SEED : 86
+SEED : 42
