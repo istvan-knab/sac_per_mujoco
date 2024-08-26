@@ -4,8 +4,8 @@ import numpy
 class EnvWrapper(gym.Wrapper):
     def __init__(self, env):
         gym.Wrapper.__init__(self, env)
-    def reset(self):
-        state = self.env.reset()[0]
+    def reset(self, seed: int):
+        state = self.env.reset(seed=seed)[0]
         return torch.from_numpy(state).unsqueeze_(dim=0).float()
 
     def step(self, action):

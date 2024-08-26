@@ -35,11 +35,15 @@ class Actor(nn.Module):
         mean = self.mean(x)
         std = self.std(x)
         std = F.softplus(std) + 1e-6
+        if torch.isnan(mean).any() or torch.isnan(std).any():
+            mean = torch.nan_to_num(mean, nan=0.1)
+            std = torch.nan_to_num(std, nan=0.1)
 
         return mean, std
 
     def sample_action(self, state):
         mu, sigma = self.forward(state)
+        torch.nn.utils.clip_grad_norm_(self.parameters(), max_norm=1.0)
         probabilities = Normal(mu, sigma)
         actions = probabilities.sample()
         action = torch.tanh(actions) * torch.tensor(self.env.action_space.high, dtype=torch.float32)
