@@ -1,4 +1,4 @@
-ENVIRONMENT : "Pendulum-v1"
+ENVIRONMENT : "BipedalWalker-v3"
 RENDER : "no"
 RENDER_MODE : "human"
 EPISODES : 2000
