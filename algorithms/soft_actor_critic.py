@@ -11,11 +11,11 @@ class SoftActorCritic:
         self.config = config
         self.set_memory()
         self.tau = config["TAU"]
-        self.actor = Actor(env)
-        self.critic_1 = Critic(env)
-        self.critic_2 = Critic(env)
-        self.critic_1_target = Critic(env)
-        self.critic_2_target = Critic(env)
+        self.actor = Actor(env, hidden_dim=config["HIDDEN_LAYERS"])
+        self.critic_1 = Critic(env, hidden_dim=config["HIDDEN_LAYERS"])
+        self.critic_2 = Critic(env, hidden_dim=config["HIDDEN_LAYERS"])
+        self.critic_1_target = Critic(env, hidden_dim=config["HIDDEN_LAYERS"])
+        self.critic_2_target = Critic(env, hidden_dim=config["HIDDEN_LAYERS"])
         self.critic_1_target.load_state_dict(self.critic_1.state_dict())
         self.critic_2_target.load_state_dict(self.critic_2.state_dict())
         self.actor_optimizer = optim.Adam(self.actor.parameters(), lr=config["LR"])
