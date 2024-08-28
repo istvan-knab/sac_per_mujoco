@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.distributions import Normal
+import numpy as np
 
 from train_setup.seed_all import seed_all
 
@@ -36,9 +37,9 @@ class Actor(nn.Module):
         std = self.std(x)
         std = F.softplus(std) + 1e-6
         if torch.isnan(mean).any() or torch.isnan(std).any():
-            mean = torch.nan_to_num(mean, nan=0.1)
-            std = torch.nan_to_num(std, nan=0.1)
-            print("hello")
+            mean = torch.nan_to_num(mean, nan=1e-6)
+            std = torch.nan_to_num(std, nan=1e-6)
+
 
         return mean, std
 

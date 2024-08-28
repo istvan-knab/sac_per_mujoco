@@ -1,5 +1,5 @@
-ENVIRONMENT : "Reacher-v5"
-RENDER : "yes"
+ENVIRONMENT : "InvertedPendulum-v5"
+RENDER : "no"
 RENDER_MODE : "human"
 EPISODES : 2000
 EARLY_STOP : 10000
