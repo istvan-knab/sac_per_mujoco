@@ -38,6 +38,7 @@ class Actor(nn.Module):
         if torch.isnan(mean).any() or torch.isnan(std).any():
             mean = torch.nan_to_num(mean, nan=0.1)
             std = torch.nan_to_num(std, nan=0.1)
+            print("hello")
 
         return mean, std
 
