@@ -36,10 +36,6 @@ class Actor(nn.Module):
         mean = self.mean(x)
         std = self.std(x)
         std = F.softplus(std) + 1e-6
-        if torch.isnan(mean).any() or torch.isnan(std).any():
-            mean = torch.nan_to_num(mean, nan=1e-6)
-            std = torch.nan_to_num(std, nan=1e-6)
-
 
         return mean, std
 

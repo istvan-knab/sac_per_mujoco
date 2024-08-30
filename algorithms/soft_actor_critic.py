@@ -68,6 +68,7 @@ class SoftActorCritic:
 
         self.actor_optimizer.zero_grad()
         actor_loss.backward()
+        torch.nn.utils.clip_grad_norm_(self.actor.parameters(), max_norm=1)
         self.actor_optimizer.step()
 
         for param, target_param in zip(self.critic_1.parameters(), self.critic_1_target.parameters()):
