@@ -168,3 +168,4 @@ cython_debug/
 .neptune/async/run__9ce3a378-bb43-4809-807b-ff23282002d1__5985__rz80xx8z/metadata.json
 models/pictures/.DS_Store
 .idea/sac_per_mujoco.iml
+.idea/sac_per_mujoco.iml
