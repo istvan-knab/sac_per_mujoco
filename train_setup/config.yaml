@@ -1,4 +1,4 @@
-ENVIRONMENT : "Swimmer-v5"
+ENVIRONMENT : "Hopper-v5"
 RENDER : "yes"
 RENDER_MODE : "human"
 EPISODES : 2000
