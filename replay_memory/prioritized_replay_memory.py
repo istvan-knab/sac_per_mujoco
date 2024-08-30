@@ -9,6 +9,7 @@ class PER(ReplayMemory):
         self.buffer_size = buffer_size
         self.batch_size = batch_size
         self.memory = deque([], maxlen=self.buffer_size)
+        self.priorities = deque([], maxlen=self.buffer_size)
 
     def add_element(self, *args):
         Transition = namedtuple('Transition', ('state', 'action',

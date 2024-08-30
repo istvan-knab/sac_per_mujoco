@@ -45,8 +45,6 @@ def rl_loop():
             step += 1
             action, _ = agent.actor.sample_action(state)
             next_state, reward, terminated, truncated, info = env.step(action)
-            if config['RENDER'] == 'yes':
-                env.render()
             if terminated or truncated:
                 done = torch.tensor(True).unsqueeze(0).unsqueeze(0)
             agent.memory.add_element(state, action, next_state, reward, done)

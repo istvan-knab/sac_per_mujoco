@@ -33,6 +33,15 @@ class SoftActorCritic:
             raise NotImplementedError
         else:
             raise ValueError(f"Choose train mode from:\n -simple \n -per \n -ucb")
+
+    def check_gradients(self, model):
+        for name, param in model.named_parameters():
+            if param.grad is not None:
+                if torch.isnan(param.grad).any():
+                    print(f'NaN in gradients of {name}')
+                if torch.isinf(param.grad).any():
+                    print(f'Inf in gradients of {name}')
+
     def update_policy(self):
 
         if self.memory.__len__() < self.config["BATCH_SIZE"]:
@@ -41,6 +50,7 @@ class SoftActorCritic:
         state, action, next_state, reward, done = self.memory.sample()
         with torch.no_grad():
             next_action, next_log_prob = self.actor.sample_action(next_state)
+            next_log_prob = torch.clamp(next_log_prob, min=1e-10).float()
             q1_target = self.critic_1_target(next_state, next_action)
             q2_target = self.critic_2_target(next_state, next_action)
             q_target = reward + ~done * self.config["DISCOUNT_FACTOR"] * (
@@ -53,10 +63,12 @@ class SoftActorCritic:
 
         self.critic_1_optimizer.zero_grad()
         critic_1_loss.backward()
+        torch.nn.utils.clip_grad_norm_(self.critic_1.parameters(), max_norm=1.0)
         self.critic_1_optimizer.step()
 
         self.critic_2_optimizer.zero_grad()
         critic_2_loss.backward()
+        torch.nn.utils.clip_grad_norm_(self.critic_2.parameters(), max_norm=1.0)
         self.critic_2_optimizer.step()
 
         # Update Actor
@@ -68,7 +80,7 @@ class SoftActorCritic:
 
         self.actor_optimizer.zero_grad()
         actor_loss.backward()
-        torch.nn.utils.clip_grad_norm_(self.actor.parameters(), max_norm=1)
+        torch.nn.utils.clip_grad_norm_(self.actor.parameters(), max_norm=1.0)
         self.actor_optimizer.step()
 
         for param, target_param in zip(self.critic_1.parameters(), self.critic_1_target.parameters()):
