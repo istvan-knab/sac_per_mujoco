@@ -46,7 +46,8 @@ class Actor(nn.Module):
         actions = probabilities.sample()
         action = torch.tanh(actions) * torch.tensor(self.env.action_space.high, dtype=torch.float32)
         log_probs = probabilities.log_prob(actions)
-        log_probs -= torch.log(1 - action.pow(2) + self.reparam_noise)
+        argument = 1 - action.pow(2) + self.reparam_noise
+        log_probs -= torch.log(argument)
         log_probs = log_probs.sum(1, keepdim=True)
 
         return action, log_probs

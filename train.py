@@ -27,7 +27,7 @@ def rl_loop():
     else:
         env = gym.make(config["ENVIRONMENT"])
     seed_all(config['SEED'], env)
-    env = EnvWrapper(env)
+    env = EnvWrapper(env, config)
     agent = SoftActorCritic(config, env)
     logger = Logger(env, config)
     last_steps = deque([], maxlen=10)
