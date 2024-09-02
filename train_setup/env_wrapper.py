@@ -15,7 +15,7 @@ class EnvWrapper(gym.Wrapper):
 
     def step(self, action):
         action = action.squeeze(0).numpy()
-        if self.name == "Pendulum-v1":
+        if self.name == "Pendulum-v1" or self.name == "Pusher-v5":
             action = action * 2.0
         if self.name == "InvertedPendulum-v5":
             action = action * 3.0
