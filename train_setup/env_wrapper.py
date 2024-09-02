@@ -7,7 +7,7 @@ class EnvWrapper(gym.Wrapper):
         gym.Wrapper.__init__(self, env)
         self.name = config["ENVIRONMENT"]
         if self.name in config["NORMAL_ENV"]:
-            env.action_space = spaces.Box(low=-1.0, high=1.0, shape=env.observation_space.shape, dtype=np.float32)
+            env.action_space = spaces.Box(low=-1.0, high=1.0, shape=env.action_space.shape, dtype=np.float32)
 
     def reset(self, seed: int):
         state = self.env.reset(seed=seed)[0]
