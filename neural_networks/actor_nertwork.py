@@ -7,8 +7,9 @@ import numpy as np
 from train_setup.seed_all import seed_all
 
 class Actor(nn.Module):
-    def __init__(self, env, hidden_dim=128):
+    def __init__(self, env, config, hidden_dim=128):
         super(Actor, self).__init__()
+        self.device = config["DEVICE"]
         self.fc1 = nn.Linear(env.observation_space.shape[0], hidden_dim)
         self.fc2 = nn.Linear(hidden_dim, hidden_dim)
         self.mean = nn.Linear(hidden_dim, env.action_space.shape[0])
@@ -29,8 +30,11 @@ class Actor(nn.Module):
         nn.init.zeros_(self.mean.bias)
         nn.init.zeros_(self.std.bias)
 
+        self.to(self.device)
+
 
     def forward(self, state):
+        state = state.to(self.device)
         x = F.relu(self.fc1(state))
         x = F.relu(self.fc2(x))
         mean = self.mean(x)
@@ -44,7 +48,7 @@ class Actor(nn.Module):
         torch.nn.utils.clip_grad_norm_(self.parameters(), max_norm=1.0)
         probabilities = Normal(mu, sigma)
         actions = probabilities.sample()
-        action = torch.tanh(actions) * torch.tensor(self.env.action_space.high, dtype=torch.float32)
+        action = torch.tanh(actions) * torch.tensor(self.env.action_space.high, dtype=torch.float32).to(self.device)
         log_probs = probabilities.log_prob(actions)
         argument = 1 - action.pow(2) + self.reparam_noise
         log_probs -= torch.log(argument)

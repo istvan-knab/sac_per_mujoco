@@ -11,11 +11,11 @@ class SoftActorCritic:
         self.config = config
         self.set_memory()
         self.tau = config["TAU"]
-        self.actor = Actor(env, hidden_dim=config["HIDDEN_LAYERS"])
-        self.critic_1 = Critic(env, hidden_dim=config["HIDDEN_LAYERS"])
-        self.critic_2 = Critic(env, hidden_dim=config["HIDDEN_LAYERS"])
-        self.critic_1_target = Critic(env, hidden_dim=config["HIDDEN_LAYERS"])
-        self.critic_2_target = Critic(env, hidden_dim=config["HIDDEN_LAYERS"])
+        self.actor = Actor(env, config, hidden_dim=config["HIDDEN_LAYERS"])
+        self.critic_1 = Critic(env, config, hidden_dim=config["HIDDEN_LAYERS"])
+        self.critic_2 = Critic(env, config, hidden_dim=config["HIDDEN_LAYERS"])
+        self.critic_1_target = Critic(env, config, hidden_dim=config["HIDDEN_LAYERS"])
+        self.critic_2_target = Critic(env, config, hidden_dim=config["HIDDEN_LAYERS"])
         self.critic_1_target.load_state_dict(self.critic_1.state_dict())
         self.critic_2_target.load_state_dict(self.critic_2.state_dict())
         self.actor_optimizer = optim.Adam(self.actor.parameters(), lr=config["LR"])
@@ -34,13 +34,6 @@ class SoftActorCritic:
         else:
             raise ValueError(f"Choose train mode from:\n -simple \n -per \n -ucb")
 
-    def check_gradients(self, model):
-        for name, param in model.named_parameters():
-            if param.grad is not None:
-                if torch.isnan(param.grad).any():
-                    print(f'NaN in gradients of {name}')
-                if torch.isinf(param.grad).any():
-                    print(f'Inf in gradients of {name}')
 
     def update_policy(self):
 
@@ -48,6 +41,11 @@ class SoftActorCritic:
             return 0, 0, 0
 
         state, action, next_state, reward, done = self.memory.sample()
+        state = state.to(self.config["DEVICE"])
+        action = action.to(self.config["DEVICE"])
+        next_state = next_state.to(self.config["DEVICE"])
+        reward = reward.to(self.config["DEVICE"])
+        done = done.to(self.config["DEVICE"])
         with torch.no_grad():
             next_action, next_log_prob = self.actor.sample_action(next_state)
             next_log_prob = torch.clamp(next_log_prob, min=1e-10).float()

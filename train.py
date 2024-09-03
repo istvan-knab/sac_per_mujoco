@@ -16,6 +16,14 @@ def check_early_stopping(last_steps, stop):
     else:
         return False
 
+def select_device(config):
+    if torch.backends.mps.is_available():
+        return torch.device("mps")
+    elif torch.cuda.is_available():
+        return torch.device("cuda")
+    else:
+        return torch.device("cpu")
+
 def rl_loop():
     with open('train_setup/config.yaml', 'r') as file:
         config = yaml.safe_load(file)
@@ -23,7 +31,7 @@ def rl_loop():
         env = gym.make(config["ENVIRONMENT"],render_mode = config["RENDER_MODE"])
     else:
         env = gym.make(config["ENVIRONMENT"])
-    config["DEVICE"] = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    config["DEVICE"] = select_device(config)
     seed_all(config['SEED'], env)
     env = EnvWrapper(env, config)
     agent = SoftActorCritic(config, env)

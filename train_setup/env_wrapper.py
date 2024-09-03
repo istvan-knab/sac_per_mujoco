@@ -14,15 +14,15 @@ class EnvWrapper(gym.Wrapper):
         return torch.from_numpy(state).unsqueeze_(dim=0).float()
 
     def step(self, action):
-        action = action.squeeze(0).numpy()
+        action = action.squeeze(0).cpu().numpy()
         if self.name == "Pendulum-v1" or self.name == "Pusher-v5":
             action = action * 2.0
         if self.name == "InvertedPendulum-v5":
             action = action * 3.0
         next_state, reward, terminated, truncated, info = self.env.step(action)
         next_state = torch.from_numpy(next_state).unsqueeze_(dim=0).float()
-        reward = torch.tensor(reward).view(1, -1)
-        terminated = torch.tensor(terminated).view(1, -1)
-        truncated = torch.tensor(truncated).view(1, -1)
+        reward = torch.tensor(reward, dtype=torch.float32).view(1, -1)
+        terminated = torch.tensor(terminated, dtype=torch.float32).view(1, -1)
+        truncated = torch.tensor(truncated, dtype=torch.float32).view(1, -1)
 
         return next_state, reward, terminated, truncated, info

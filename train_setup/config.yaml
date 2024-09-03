@@ -1,4 +1,4 @@
-ENVIRONMENT : "Pusher-v5"
+ENVIRONMENT : "Pendulum-v1"
 RENDER : "no"
 RENDER_MODE : "human"
 NORMAL_ENV: ["Pendulum-v1", "InvertedPendulum-v5", "Pusher-v5"]
