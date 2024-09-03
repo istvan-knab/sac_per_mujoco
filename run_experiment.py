@@ -9,7 +9,7 @@ def run_test():
     with open('test_setup/config.yaml', 'r') as file:
         config = yaml.safe_load(file)
     env = gym.make(config["ENVIRONMENT"], render_mode="human")
-    env = EnvWrapper(env)
+    env = EnvWrapper(env, config)
     state = env.reset(config["SEED"])
     done = torch.tensor(False).unsqueeze(0).unsqueeze(0)
     agent = torch.load("models/" + config["model"])

@@ -16,9 +16,6 @@ def check_early_stopping(last_steps, stop):
     else:
         return False
 
-def replace_non_compliant_json_values(arr):
-    return [0 if x != x or x == float('inf') or x == float('-inf') else x for x in arr]
-
 def rl_loop():
     with open('train_setup/config.yaml', 'r') as file:
         config = yaml.safe_load(file)
@@ -26,6 +23,7 @@ def rl_loop():
         env = gym.make(config["ENVIRONMENT"],render_mode = config["RENDER_MODE"])
     else:
         env = gym.make(config["ENVIRONMENT"])
+    config["DEVICE"] = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     seed_all(config['SEED'], env)
     env = EnvWrapper(env, config)
     agent = SoftActorCritic(config, env)
@@ -55,7 +53,6 @@ def rl_loop():
             episode_critic_2_loss += critic_2_loss
             episode_actor_loss += actor_loss
             losses = [episode_critic_1_loss, episode_critic_2_loss, episode_actor_loss]
-            losses = replace_non_compliant_json_values(losses)
         last_steps.append(episode_reward)
         logger.step(episode_reward, losses[0], losses[1], losses[2], config, step)
         break_flag = check_early_stopping(np.array(last_steps), config['EARLY_STOP'])

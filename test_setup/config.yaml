@@ -1,3 +1,4 @@
-ENVIRONMENT : "BipedalWalker-v3"
-model: "SACPERM-379.pth"
+ENVIRONMENT : "Pusher-v5"
+NORMAL_ENV: ["Pendulum-v1", "InvertedPendulum-v5", "Pusher-v5"]
+model: "SACPERM-600.pth"
 SEED : 8
