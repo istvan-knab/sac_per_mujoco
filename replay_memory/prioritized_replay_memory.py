@@ -9,12 +9,18 @@ class PER(ReplayMemory):
         self.buffer_size = buffer_size
         self.batch_size = batch_size
         self.memory = deque([], maxlen=self.buffer_size)
-        self.priorities = deque([], maxlen=self.buffer_size)
+        self.td_errors = deque([], maxlen=self.buffer_size)
+        self.weights = deque([], maxlen=self.buffer_size)
+        self.fit_counts = deque([], maxlen=self.buffer_size)
+
+    def update_memory(self):
+        pass
 
     def add_element(self, *args):
-        Transition = namedtuple('Transition', ('state', 'action',
+        transition = namedtuple('transition', ('state', 'action',
                                                'next_state', 'reward', 'done'))
-        self.memory.append(Transition(*args))
+
+        self.memory.append(transition(*args))
 
     def sample(self):
         batch = zip(*(random.sample(self.memory, self.batch_size)))
