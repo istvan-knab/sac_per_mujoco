@@ -7,10 +7,6 @@ class Logger:
             api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiI5ZGUzMWI0ZC01ZDIyLTQwNWQtODQzOS1mNzQ5NTA3YzdmOGUifQ==",
         )  # your credentials
 
-        params = {"learning_rate": config["LR"], "discount_factor": config["DISCOUNT_FACTOR"],
-                  "Environment": environment, "batch_size": config["BATCH_SIZE"],
-                  "EPISODES": config["EPISODES"],"LearningRate": config["LR"], "GAMMA": config["DISCOUNT_FACTOR"],
-                  "Mode": config["TRAIN_MODE"]}
         self.run["algorithm"] = "SAC"
         self.run["environment"] = config["ENVIRONMENT"]
         self.run["EPISODES"] = config["EPISODES"]
@@ -26,7 +22,8 @@ class Logger:
         self.run["BETA"] = config["BETA"]
         self.run["TAU"] = config["TAU"]
         self.run["SEED"] = config["SEED"]
-        self.run["ENTROPY_COEFFICIENT"] = config["ENTROPY_COEFFICIENT"]
+        self.run["ENTROPY_START"] = config["ENTROPY_START"]
+        self.run["ENTROPY_END"] = config["ENTROPY_END"]
         self.run_id = self.run["sys/id"].fetch()
         self.start_training(config)
 
@@ -42,16 +39,17 @@ class Logger:
         print(f'Buffer size: {config["BUFFER_SIZE"]}')
         print(f'Batch size: {config["BATCH_SIZE"]}')
 
-    def neptune_log(self,reward, c_1_loss,c_2_loss, a_loss, episode_step):
+    def neptune_log(self,reward, c_1_loss,c_2_loss, a_loss, episode_step, temperature):
         self.run["train/reward"].append(reward)
         self.run["train/critic_1_loss"].append(c_1_loss)
         self.run["train/critic_2_loss"].append(c_2_loss)
         self.run["train/actor_loss"].append(a_loss)
         self.run["train/episode_step"].append(episode_step)
+        self.run["train/temperature"].append(temperature)
 
 
-    def step(self, reward, c_1_loss,c_2_loss, a_loss, config, episode_step):
-        self.neptune_log(reward, c_1_loss,c_2_loss, a_loss, episode_step)
+    def step(self, reward, c_1_loss,c_2_loss, a_loss, episode_step, temperature):
+        self.neptune_log(reward, c_1_loss,c_2_loss, a_loss, episode_step, temperature)
 
     def set_tqdm(self):
         WHITE = '\033[97m'

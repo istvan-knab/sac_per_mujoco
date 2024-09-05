@@ -10,6 +10,8 @@ class SoftActorCritic:
     def __init__(self, config, env):
         self.config = config
         self.set_memory()
+        self.temperature = config["ENTROPY_START"]
+        self.temperature_decay = (float(config["ENTROPY_START"] - config["ENTROPY_END"]) / config["EPISODES"])
         self.tau = config["TAU"]
         self.actor = Actor(env, config, hidden_dim=config["HIDDEN_LAYERS"])
         self.critic_1 = Critic(env, config, hidden_dim=config["HIDDEN_LAYERS"])
@@ -34,7 +36,8 @@ class SoftActorCritic:
         else:
             raise ValueError(f"Choose train mode from:\n -simple \n -per \n -ucb")
 
-
+    def set_entropy(self):
+        self.temperature -= self.temperature_decay
     def update_policy(self):
 
         if self.memory.__len__() < self.config["BATCH_SIZE"]:
@@ -52,7 +55,7 @@ class SoftActorCritic:
             q1_target = self.critic_1_target(next_state, next_action)
             q2_target = self.critic_2_target(next_state, next_action)
             q_target = reward + ~done * self.config["DISCOUNT_FACTOR"] * (
-                        torch.min(q1_target, q2_target) - self.config["ENTROPY_COEFFICIENT"] * next_log_prob)
+                        torch.min(q1_target, q2_target) - self.temperature * next_log_prob)
 
         q1 = self.critic_1(state, action)
         q2 = self.critic_2(state, action)
@@ -74,7 +77,7 @@ class SoftActorCritic:
         q1_new = self.critic_1(state, new_action)
         q2_new = self.critic_2(state, new_action)
         log_prob = torch.clamp(log_prob, min=1e-10).float()
-        actor_loss = (self.config["ENTROPY_COEFFICIENT"] * log_prob - torch.min(q1_new, q2_new)).mean()
+        actor_loss = (self.temperature * log_prob - torch.min(q1_new, q2_new)).mean()
 
         self.actor_optimizer.zero_grad()
         actor_loss.backward()

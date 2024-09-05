@@ -62,8 +62,9 @@ def rl_loop():
             episode_actor_loss += actor_loss
             losses = [episode_critic_1_loss, episode_critic_2_loss, episode_actor_loss]
         last_steps.append(episode_reward)
-        logger.step(episode_reward, losses[0], losses[1], losses[2], config, step)
+        logger.step(episode_reward, losses[0], losses[1], losses[2], step, agent.temperature)
         break_flag = check_early_stopping(np.array(last_steps), config['EARLY_STOP'])
+        agent.set_entropy()
         if break_flag:
             break
 
