@@ -14,6 +14,8 @@ class Logger:
         self.run["algorithm"] = "SAC"
         self.run["environment"] = config["ENVIRONMENT"]
         self.run["EPISODES"] = config["EPISODES"]
+        self.run["EARLY_STOP"] = config["EARLY_STOP"]
+        self.run["HIDDEN_LAYERS"] = config["HIDDEN_LAYERS"]
         self.run["LR"] = config["LR"]
         self.run["DISCOUNT_FACTOR"] = config["DISCOUNT_FACTOR"]
         self.run["TRAIN_MODE"] = config["TRAIN_MODE"]
@@ -22,7 +24,9 @@ class Logger:
         self.run["DEVICE"] = config["DEVICE"]
         self.run["PER_ALPHA"] = config["PER_ALPHA"]
         self.run["BETA"] = config["BETA"]
-        self.run["train/ENTROPY_COEFFICIENT"] = config["ENTROPY_COEFFICIENT"]
+        self.run["TAU"] = config["TAU"]
+        self.run["SEED"] = config["SEED"]
+        self.run["ENTROPY_COEFFICIENT"] = config["ENTROPY_COEFFICIENT"]
         self.run_id = self.run["sys/id"].fetch()
         self.start_training(config)
 
@@ -47,20 +51,8 @@ class Logger:
 
 
     def step(self, reward, c_1_loss,c_2_loss, a_loss, config, episode_step):
-
         self.neptune_log(reward, c_1_loss,c_2_loss, a_loss, episode_step)
-        self.run["train/algorithm"] = "SAC"
-        self.run["train/environment"] = config["ENVIRONMENT"]
-        self.run["train/EPISODES"] = config["EPISODES"]
-        self.run["train/LR"] = config["LR"]
-        self.run["train/DISCOUNT_FACTOR"] = config["DISCOUNT_FACTOR"]
-        self.run["train/TRAIN_MODE"] = config["TRAIN_MODE"]
-        self.run["train/BUFFER_SIZE"] = config["BUFFER_SIZE"]
-        self.run["train/BATCH_SIZE"] = config["BATCH_SIZE"]
-        self.run["train/DEVICE"] = config["DEVICE"]
-        self.run["train/PER_ALPHA"] = config["PER_ALPHA"]
-        self.run["train/BETA"] = config["BETA"]
-        self.run["train/ENTROPY_COEFFICIENT"] = config["ENTROPY_COEFFICIENT"]
+
     def set_tqdm(self):
         WHITE = '\033[97m'
         RESET = '\033[0m'
