@@ -7,15 +7,17 @@ NORMAL_ENV: ["Pendulum-v1", "InvertedPendulum-v5", "Pusher-v5"]
 #Train Parameters
 EPISODES : 3000
 EARLY_STOP : 3600
+SEED : 42
+DEVICE : "cuda"
+
+#hyperparameters
 LR : 0.0001
 ENTROPY_START: 0.1
 ENTROPY_END : 0.01
 DISCOUNT_FACTOR : 0.99
 BUFFER_SIZE: 200000
 BATCH_SIZE : 1024
-DEVICE : "cuda"
 TAU : 0.05
-SEED : 42
 
 #Neural Network
 HIDDEN_LAYERS: 512
