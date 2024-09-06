@@ -13,7 +13,7 @@ class PER(ReplayMemory):
         self.weights = deque([], maxlen=self.buffer_size)
         self.fit_counts = deque([], maxlen=self.buffer_size)
 
-    def update_priorities(self):
+    def update_priorities(self, td_errors):
         pass
 
     def add_element(self, *args):
