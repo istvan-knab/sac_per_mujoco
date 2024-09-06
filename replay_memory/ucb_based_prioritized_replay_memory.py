@@ -13,6 +13,9 @@ class UCBMemory(ReplayMemory):
         self.fit_counts = deque([], maxlen=self.buffer_size)
         self.cp = config["CP"]
 
+    def update_priorities(self):
+        pass
+
     def add_element(self, *args):
         Transition = namedtuple('Transition', ('state', 'action',
                                                'next_state', 'reward', 'done'))

@@ -5,15 +5,15 @@ import torch
 from replay_memory.replay_memory import ReplayMemory
 
 class PER(ReplayMemory):
-    def __init__(self, buffer_size: int, batch_size: int):
-        self.buffer_size = buffer_size
-        self.batch_size = batch_size
+    def __init__(self, config):
+        self.buffer_size = config["BUFFER_SIZE"]
+        self.batch_size = config["BATCH_SIZE"]
         self.memory = deque([], maxlen=self.buffer_size)
         self.td_errors = deque([], maxlen=self.buffer_size)
         self.weights = deque([], maxlen=self.buffer_size)
         self.fit_counts = deque([], maxlen=self.buffer_size)
 
-    def update_memory(self):
+    def update_priorities(self):
         pass
 
     def add_element(self, *args):

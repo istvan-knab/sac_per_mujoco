@@ -3,9 +3,9 @@ import random
 import torch
 
 class ReplayMemory:
-    def __init__(self, buffer_size:int, batch_size:int):
-        self.buffer_size = buffer_size
-        self.batch_size = batch_size
+    def __init__(self, config):
+        self.buffer_size = config["BUFFER_SIZE"]
+        self.batch_size = config["BATCH_SIZE"]
         self.memory = deque([], maxlen=self.buffer_size)
 
     def add_element(self, *args):
