@@ -1,6 +1,6 @@
 #Environment parameters
-ENVIRONMENT : "InvertedPendulum-v5"
-RENDER : "no"
+ENVIRONMENT : "Pendulum-v1"
+RENDER : "yes"
 RENDER_MODE : "human"
 NORMAL_ENV: ["Pendulum-v1", "InvertedPendulum-v5", "Pusher-v5"]
 

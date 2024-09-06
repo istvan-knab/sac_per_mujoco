@@ -14,8 +14,11 @@ class ReplayMemory:
         self.memory.append(Transition(*args))
 
     def sample(self):
-        batch = zip(*(random.sample(self.memory, self.batch_size)))
+        sample_indices = random.sample(range(len(self.memory)), self.batch_size)
+        sampled_elements = [self.memory[i] for i in sample_indices]
+        batch = zip(*sampled_elements)
         return [torch.cat(items) for items in batch]
+
 
     def __len__(self):
         return len(self.memory)
