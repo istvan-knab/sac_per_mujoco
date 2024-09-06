@@ -1,4 +1,4 @@
-ENVIRONMENT : "Pusher-v5"
+ENVIRONMENT : "HalfCheetah-v5"
 NORMAL_ENV: ["Pendulum-v1", "InvertedPendulum-v5", "Pusher-v5"]
-model: "SACPERM-600.pth"
+model: "SACPERM-633.pth"
 SEED : 8

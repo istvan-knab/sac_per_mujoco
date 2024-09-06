@@ -21,7 +21,7 @@ def run_test():
         if terminated or truncated:
             done = torch.tensor(True).unsqueeze(0).unsqueeze(0)
         state = next_state
-        #time.sleep(0.08)
+        time.sleep(0.08)
         console_log(f"Step: {step}, Reward: {0}")
 
 if __name__ == "__main__":

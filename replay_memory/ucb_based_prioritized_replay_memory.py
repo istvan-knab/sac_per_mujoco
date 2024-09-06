@@ -5,10 +5,13 @@ import torch
 from replay_memory.replay_memory import ReplayMemory
 
 class UCBMemory(ReplayMemory):
-    def __init__(self, buffer_size: int, batch_size: int):
-        self.buffer_size = buffer_size
-        self.batch_size = batch_size
+    def __init__(self, config):
+        self.buffer_size = config["BUFFER_SIZE"]
+        self.batch_size = config["BATCH_SIZE"]
         self.memory = deque([], maxlen=self.buffer_size)
+        self.td_errors = deque([], maxlen=self.buffer_size)
+        self.fit_counts = deque([], maxlen=self.buffer_size)
+        self.cp = config["CP"]
 
     def add_element(self, *args):
         Transition = namedtuple('Transition', ('state', 'action',

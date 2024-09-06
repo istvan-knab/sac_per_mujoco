@@ -28,7 +28,7 @@ class SoftActorCritic:
     def set_memory(self):
 
         if self.config["TRAIN_MODE"] == "simple":
-            self.memory = ReplayMemory(self.config["BUFFER_SIZE"], self.config["BATCH_SIZE"])
+            self.memory = ReplayMemory(self.config)
         elif self.config["TRAIN_MODE"] == "per":
             raise NotImplementedError
         elif self.config["TRAIN_MODE"] == "ucb":
