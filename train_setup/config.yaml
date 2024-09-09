@@ -1,6 +1,6 @@
 #Environment parameters
 ENVIRONMENT : "Pendulum-v1"
-RENDER : "yes"
+RENDER : "no"
 RENDER_MODE : "human"
 NORMAL_ENV: ["Pendulum-v1", "InvertedPendulum-v5", "Pusher-v5"]
 
@@ -15,15 +15,17 @@ LR : 0.0001
 ENTROPY_START: 0.1
 ENTROPY_END : 0.01
 DISCOUNT_FACTOR : 0.99
-BUFFER_SIZE: 200000
-BATCH_SIZE : 1024
+BUFFER_SIZE: 10000
+BATCH_SIZE : 128
 TAU : 0.05
 
 #Neural Network
-HIDDEN_LAYERS: 512
+HIDDEN_LAYERS: 128
 
 #Memory
 TRAIN_MODE : "simple"
-PER_ALPHA: 1.0  #per
-BETA : 0.5      #per
-CP : 0          #ucb
+PER_ALPHA: 1.0        #per
+BETA : 0.5            #per
+INIT_TD_ERROR: 0.001  #per
+INIT_WEIGHT : 0.01    #per
+CP : 0                #ucb

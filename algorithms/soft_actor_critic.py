@@ -3,6 +3,7 @@ import torch.optim as optim
 import torch.nn.functional as F
 
 from replay_memory.replay_memory import ReplayMemory
+from replay_memory.prioritized_replay_memory import PER
 from neural_networks.actor_nertwork import Actor
 from neural_networks.critic_network import Critic
 from train_setup.seed_all import seed_all, test_seed
@@ -30,7 +31,7 @@ class SoftActorCritic:
         if self.config["TRAIN_MODE"] == "simple":
             self.memory = ReplayMemory(self.config)
         elif self.config["TRAIN_MODE"] == "per":
-            raise NotImplementedError
+            self.memory = PER(self.config)
         elif self.config["TRAIN_MODE"] == "ucb":
             raise NotImplementedError
         else:
@@ -61,6 +62,13 @@ class SoftActorCritic:
         q2 = self.critic_2(state, action)
         critic_1_loss = F.mse_loss(q1, q_target.float())
         critic_2_loss = F.mse_loss(q2, q_target.float())
+
+        #Update per
+        td_error_1 = q1_target - q1
+        td_error_2 = q2_target - q2
+        mean_td_error = (td_error_1 + td_error_2) / 2
+        if self.config["TRAIN_MODE"] == "per" or self.config["TRAIN_MODE"] == "ucb":
+            self.memory.update_priorities(mean_td_error)
 
         self.critic_1_optimizer.zero_grad()
         critic_1_loss.backward()
