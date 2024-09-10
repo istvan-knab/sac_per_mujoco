@@ -1,12 +1,12 @@
 #Environment parameters
-ENVIRONMENT : "Pendulum-v1"
+ENVIRONMENT : "BipedalWalker-v3"
 RENDER : "no"
 RENDER_MODE : "human"
 NORMAL_ENV: ["Pendulum-v1", "InvertedPendulum-v5", "Pusher-v5"]
 
 #Train Parameters
 EPISODES : 3000
-EARLY_STOP : 3600
+EARLY_STOP : 400
 SEED : 42
 DEVICE : "cuda"
 
@@ -20,7 +20,7 @@ BATCH_SIZE : 256
 TAU : 0.05
 
 #Neural Network
-HIDDEN_LAYERS: 128
+HIDDEN_LAYERS: 256
 
 #Memory
 TRAIN_MODE : "simple"

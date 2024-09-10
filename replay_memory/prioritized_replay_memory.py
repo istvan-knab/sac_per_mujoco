@@ -16,13 +16,14 @@ class PER(ReplayMemory):
         self.weights = deque([], maxlen=self.buffer_size)
 
     def update_priorities(self, td_errors):
-        indicies_list = self.sample_indices.tolist()
+        self.td_errors = np.array(self.td_errors)
+        self.weights = np.array(self.weights)
         td_errors = np.array(td_errors.unsqueeze(0).detach().cpu().numpy().flatten())
-        for count, index in enumerate(indicies_list):
-            self.td_errors[index] = np.abs(td_errors[count])
-        for count, index in enumerate(indicies_list):
-            self.weights[index] = ((self.td_errors[count] + self.init_td_error) /
-                                                sum(self.td_errors))
+        self.td_errors[self.sample_indices] =  np.abs(td_errors)
+        self.weights[self.sample_indices] = ((self.td_errors[self.sample_indices] + self.init_td_error) /
+                               sum(self.td_errors + self.init_td_error))
+        self.td_errors = deque(self.td_errors, maxlen=self.buffer_size)
+        self.weights = deque(self.weights, maxlen=self.buffer_size)
 
     def add_element(self, *args):
         transition = namedtuple('transition', ('state', 'action',
