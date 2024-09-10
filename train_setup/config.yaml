@@ -15,7 +15,7 @@ LR : 0.0001
 ENTROPY_START: 0.1
 ENTROPY_END : 0.01
 DISCOUNT_FACTOR : 0.99
-BUFFER_SIZE: 10000
+BUFFER_SIZE: 200000
 BATCH_SIZE : 128
 TAU : 0.05
 
@@ -23,9 +23,7 @@ TAU : 0.05
 HIDDEN_LAYERS: 128
 
 #Memory
-TRAIN_MODE : "simple"
-PER_ALPHA: 1.0        #per
-BETA : 0.5            #per
+TRAIN_MODE : "per"
 INIT_TD_ERROR: 0.001  #per
 INIT_WEIGHT : 0.01    #per
 CP : 0                #ucb

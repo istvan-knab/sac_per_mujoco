@@ -18,8 +18,6 @@ class Logger:
         self.run["BUFFER_SIZE"] = config["BUFFER_SIZE"]
         self.run["BATCH_SIZE"] = config["BATCH_SIZE"]
         self.run["DEVICE"] = config["DEVICE"]
-        self.run["PER_ALPHA"] = config["PER_ALPHA"]
-        self.run["BETA"] = config["BETA"]
         self.run["TAU"] = config["TAU"]
         self.run["SEED"] = config["SEED"]
         self.run["ENTROPY_START"] = config["ENTROPY_START"]

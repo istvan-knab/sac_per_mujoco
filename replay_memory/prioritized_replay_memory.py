@@ -34,8 +34,7 @@ class PER(ReplayMemory):
     def sample(self):
         w = torch.tensor(self.weights)
         w = F.softmax(w, dim=0)
-        self.sample_indices = np.random.choice(range(len(self.memory)), self.batch_size,
-                                               p=w)
+        self.sample_indices = np.random.choice(range(len(self.memory)), self.batch_size, p=np.array(w))
         sampled_elements = [self.memory[i] for i in self.sample_indices]
         batch = zip(*sampled_elements)
         return [torch.cat(items) for items in batch]
