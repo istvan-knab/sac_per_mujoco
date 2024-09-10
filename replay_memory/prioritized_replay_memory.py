@@ -14,7 +14,6 @@ class PER(ReplayMemory):
         self.memory = deque([], maxlen=self.buffer_size)
         self.td_errors = deque([], maxlen=self.buffer_size)
         self.weights = deque([], maxlen=self.buffer_size)
-        self.fit_counts = deque([], maxlen=self.buffer_size)
 
     def update_priorities(self, td_errors):
         indicies_list = self.sample_indices.tolist()
@@ -24,7 +23,6 @@ class PER(ReplayMemory):
         for count, index in enumerate(indicies_list):
             self.weights[index] = ((self.td_errors[count] + self.init_td_error) /
                                                 sum(self.td_errors))
-            self.fit_counts[index] += 1
 
     def add_element(self, *args):
         transition = namedtuple('transition', ('state', 'action',
@@ -32,7 +30,6 @@ class PER(ReplayMemory):
         self.memory.append(transition(*args))
         self.td_errors.append(self.init_td_error)
         self.weights.append(self.init_weight)
-        self.fit_counts.append(0)
 
     def sample(self):
         w = torch.tensor(self.weights)
