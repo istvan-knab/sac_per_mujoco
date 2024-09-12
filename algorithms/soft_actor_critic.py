@@ -2,11 +2,13 @@ import torch
 import torch.optim as optim
 import torch.nn.functional as F
 
-from replay_memory.numpy_buffer.replay_memory import ReplayMemory
-from replay_memory.numpy_buffer.prioritized_replay_memory import PER
+from replay_memory.replay_memory import ReplayMemory
+from replay_memory.prioritized_replay_memory import PER
 from neural_networks.actor_nertwork import Actor
 from neural_networks.critic_network import Critic
-from train_setup.seed_all import seed_all, test_seed
+from train_setup.seed_all import seed_all
+
+
 class SoftActorCritic:
     def __init__(self, config, env):
         self.config = config

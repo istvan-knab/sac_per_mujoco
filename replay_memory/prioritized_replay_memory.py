@@ -1,45 +1,66 @@
-from collections import deque, namedtuple
 import numpy as np
 import torch
-import torch.nn.functional as F
+from numpy import dtype
+from torch.functional import Tensor
 
-from replay_memory.replay_memory import ReplayMemory
 
-class PER(ReplayMemory):
+class PER:
+
     def __init__(self, config):
         self.buffer_size = config["BUFFER_SIZE"]
         self.batch_size = config["BATCH_SIZE"]
+        self.device = config["DEVICE"]
+        self.state = np.zeros([self.buffer_size, config["INPUT_FEATURES"]])
+        self.action = np.zeros([self.buffer_size, config["ACTION_SPACE"]])
+        self.next_state = np.zeros([self.buffer_size, config["INPUT_FEATURES"]])
         self.init_td_error = config["INIT_TD_ERROR"]
         self.init_weight = config["INIT_WEIGHT"]
-        self.memory = deque([], maxlen=self.buffer_size)
-        self.td_errors = deque([], maxlen=self.buffer_size)
-        self.weights = deque([], maxlen=self.buffer_size)
+        self.reward = np.zeros(self.buffer_size)
+        self.done = np.zeros([self.buffer_size])
+        self.td_error = np.zeros(self.buffer_size)
+        self.weight = np.zeros([self.buffer_size])
+        self.queue_length = 0
+        self.pointer = 0
+        self.indicies = np.zeros(self.batch_size)
 
-    def update_priorities(self, td_errors):
-        self.td_errors = np.array(self.td_errors)
-        self.weights = np.array(self.weights)
-        td_errors = np.array(td_errors.unsqueeze(0).detach().cpu().numpy().flatten())
-        self.td_errors[self.sample_indices] =  np.abs(td_errors)
-        self.weights[self.sample_indices] = ((self.td_errors[self.sample_indices] + self.init_td_error) /
-                               sum(self.td_errors + self.init_td_error))
-        self.td_errors = deque(self.td_errors, maxlen=self.buffer_size)
-        self.weights = deque(self.weights, maxlen=self.buffer_size)
+    def add_element(self, state, action, next_state, reward, done):
+        state = state.cpu().numpy()
+        action = action.cpu().numpy()
+        next_state = next_state.cpu().numpy()
+        reward = reward.cpu().numpy()
 
-    def add_element(self, *args):
-        transition = namedtuple('transition', ('state', 'action',
-                                               'next_state', 'reward', 'done'))
-        self.memory.append(transition(*args))
-        self.td_errors.append(self.init_td_error)
-        self.weights.append(self.init_weight)
+        if self.queue_length < self.buffer_size:
+            self.queue_length += 1
+        self.state = np.roll(self.state, (1, 0), (0, 1))
+        self.action = np.roll(self.action, (1, 0), (0, 1))
+        self.next_state = np.roll(self.next_state, (1, 0), (0, 1))
+        self.reward = np.roll(self.reward, 1)
+        self.done = np.roll(self.done, 1)
+        self.td_error = np.roll(self.td_error, 1)
+        self.weight = np.roll(self.weight, 1)
+        self.state[0] = state
+        self.action[0] = action
+        self.next_state[0] = next_state
+        self.reward[0] = reward
+        self.done[0] = done
+        self.td_error[0] = self.init_td_error
+        self.weight[0] = self.init_weight
+
 
     def sample(self):
-        w = torch.tensor(self.weights)
-        w = F.softmax(w, dim=0)
-        self.sample_indices = np.random.choice(range(len(self.memory)), self.batch_size, p=np.array(w))
-        sampled_elements = [self.memory[i] for i in self.sample_indices]
-        batch = zip(*sampled_elements)
-        return [torch.cat(items) for items in batch]
+        self.indicies = np.random.choice(range(self.buffer_size), self.batch_size, p=self.weight / sum(self.weight))
+        state = torch.tensor(self.state[self.indicies], dtype=torch.float32).to(self.device)
+        action = torch.tensor(self.action[self.indicies], dtype=torch.float32).to(self.device)
+        next_state = torch.tensor(self.next_state[self.indicies], dtype=torch.float32).to(self.device)
+        reward = torch.tensor(self.reward[self.indicies], dtype=torch.float32).to(self.device).unsqueeze_(dim=1)
+        done = torch.tensor(self.done[self.indicies], dtype=torch.bool).to(self.device).unsqueeze_(dim=1)
 
+        return state, action, next_state, reward, done
 
-def __len__(self):
-        return len(self.memory)
+    def update_priorities(self, td_error):
+        td_error = np.array(td_error.unsqueeze(0).detach().cpu().numpy().flatten())
+        self.td_error[self.indicies] = np.abs(td_error)
+        self.weight[self.indicies] = ((self.td_error[self.indicies] + self.init_td_error) /
+                                             sum(self.td_error + self.init_td_error))
+    def __len__(self):
+        return self.queue_length
