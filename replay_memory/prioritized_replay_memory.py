@@ -1,7 +1,5 @@
 import numpy as np
 import torch
-from numpy import dtype
-from torch.functional import Tensor
 
 
 class PER:

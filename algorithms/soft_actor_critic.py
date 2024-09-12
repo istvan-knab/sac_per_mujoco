@@ -4,8 +4,10 @@ import torch.nn.functional as F
 
 from replay_memory.replay_memory import ReplayMemory
 from replay_memory.prioritized_replay_memory import PER
+from replay_memory.ucb_based_prioritized_replay_memory import UCB_MEMORY
 from neural_networks.actor_nertwork import Actor
 from neural_networks.critic_network import Critic
+from replay_memory.ucb_based_prioritized_replay_memory import UCB_MEMORY
 from train_setup.seed_all import seed_all
 
 
@@ -35,7 +37,7 @@ class SoftActorCritic:
         elif self.config["TRAIN_MODE"] == "per":
             self.memory = PER(self.config)
         elif self.config["TRAIN_MODE"] == "ucb":
-            raise NotImplementedError
+            self.memory = UCB_MEMORY(self.config)
         else:
             raise ValueError(f"Choose train mode from:\n -simple \n -per \n -ucb")
 
