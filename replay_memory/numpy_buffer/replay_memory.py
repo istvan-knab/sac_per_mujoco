@@ -1,7 +1,4 @@
 import numpy as np
-import random
-import torch
-from numba import njit
 
 
 class ReplayMemory:
@@ -20,12 +17,6 @@ class ReplayMemory:
         self.indicies = np.zeros(self.batch_size)
 
     def add_element(self, state, action, next_state, reward, done):
-        state = state.cpu().numpy()
-        action = action.cpu().numpy()
-        next_state = next_state.cpu().numpy()
-        reward = reward.cpu().numpy()
-        done = done.cpu().numpy()
-
         if self.queue_length < self.buffer_size:
             self.queue_length += 1
         self.state = np.roll(self.state, (1, 0), (0, 1))
@@ -40,7 +31,7 @@ class ReplayMemory:
         self.done[0] = done
 
 
-    @njit
+
     def sample(self):
         self.indicies = np.random.choice(range(self.queue_length), self.batch_size)
         print("Hello")
