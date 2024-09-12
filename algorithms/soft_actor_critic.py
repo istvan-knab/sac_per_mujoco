@@ -3,7 +3,7 @@ import torch.optim as optim
 import torch.nn.functional as F
 
 from replay_memory.numpy_buffer.replay_memory import ReplayMemory
-from replay_memory.prioritized_replay_memory import PER
+from replay_memory.numpy_buffer.prioritized_replay_memory import PER
 from neural_networks.actor_nertwork import Actor
 from neural_networks.critic_network import Critic
 from train_setup.seed_all import seed_all, test_seed
@@ -57,7 +57,6 @@ class SoftActorCritic:
             q2_target = self.critic_2_target(next_state, next_action)
             q_target = reward + ~done * self.config["DISCOUNT_FACTOR"] * (
                         torch.min(q1_target, q2_target) - self.temperature * next_log_prob)
-
         q1 = self.critic_1(state, action)
         q2 = self.critic_2(state, action)
         critic_1_loss = F.mse_loss(q1, q_target.float())
