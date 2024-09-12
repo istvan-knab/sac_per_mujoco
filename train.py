@@ -1,6 +1,7 @@
 import numpy as np
 import yaml
 import torch
+from torch.xpu import device
 from tqdm import tqdm
 import gymnasium as gym
 from collections import deque
@@ -33,6 +34,8 @@ def rl_loop():
         env = gym.make(config["ENVIRONMENT"])
     config["DEVICE"] = select_device(config)
     seed_all(config['SEED'], env)
+    config["INPUT_FEATURES"] = env.observation_space.shape[0]
+    config["ACTION_SPACE"] = env.action_space.shape[0]
     env = EnvWrapper(env, config)
     agent = SoftActorCritic(config, env)
     logger = Logger(env, config)
