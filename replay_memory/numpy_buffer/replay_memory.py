@@ -24,7 +24,6 @@ class ReplayMemory:
         action = action.cpu().numpy()
         next_state = next_state.cpu().numpy()
         reward = reward.cpu().numpy()
-        done = done.cpu().numpy()
 
         if self.queue_length < self.buffer_size:
             self.queue_length += 1

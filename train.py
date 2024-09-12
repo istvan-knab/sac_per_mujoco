@@ -43,7 +43,7 @@ def rl_loop():
     for episode in tqdm(range(config["EPISODES"]), desc='Training Process',
                         bar_format=logger.set_tqdm(), colour='white'):
         state = env.reset(config["SEED"])
-        done = torch.tensor(False).unsqueeze(0).unsqueeze(0)
+        done = np.array([False])
         episode_reward = 0
         episode_critic_1_loss = 0
         episode_critic_2_loss = 0
@@ -55,7 +55,7 @@ def rl_loop():
             action, _ = agent.actor.sample_action(state)
             next_state, reward, terminated, truncated, info = env.step(action)
             if terminated or truncated:
-                done = torch.tensor(True).unsqueeze(0).unsqueeze(0)
+                done = np.array([True])
             agent.memory.add_element(state, action, next_state, reward, done)
             state = next_state
             episode_reward += reward
