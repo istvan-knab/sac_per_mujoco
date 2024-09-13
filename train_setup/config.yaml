@@ -1,5 +1,5 @@
 #Environment parameters
-ENVIRONMENT : "InvertedDoublePendulum-v5"
+ENVIRONMENT : "InvertedPendulum-v5"
 RENDER : "no"
 RENDER_MODE : "human"
 NORMAL_ENV: ["Pendulum-v1", "InvertedPendulum-v5", "Pusher-v5"]
@@ -13,19 +13,19 @@ SEED : 42
 DEVICE : "cuda"
 
 #hyperparameters
-LR : 0.0001
-ENTROPY_START: 0.1
+LR : 0.0003
+ENTROPY_START: 0.2
 ENTROPY_END : 0.01
 DISCOUNT_FACTOR : 0.99
-BUFFER_SIZE: 10000
-BATCH_SIZE : 512
+BUFFER_SIZE: 200000
+BATCH_SIZE : 256
 TAU : 0.05
 
 #Neural Network
-HIDDEN_LAYERS: 256
+HIDDEN_LAYERS: 128
 
 #Memory
-TRAIN_MODE : "ucb"
-INIT_TD_ERROR: 0.001  #per
-INIT_WEIGHT : 0.01    #per
-CP : 0.6              #ucb
+TRAIN_MODE : "simple"
+INIT_TD_ERROR: 0.0001  #per
+INIT_WEIGHT : 0.001    #per
+CP : 0.5               #ucb
