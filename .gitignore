@@ -169,3 +169,4 @@ cython_debug/
 models/pictures/.DS_Store
 .idea/sac_per_mujoco.iml
 .idea/sac_per_mujoco.iml
+train_setup/config.yaml
