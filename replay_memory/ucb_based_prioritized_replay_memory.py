@@ -61,7 +61,7 @@ class UCB_MEMORY:
         self.fit_count[self.indicies] += 1
         td_error = np.array(td_error.unsqueeze(0).detach().cpu().numpy().flatten())
         self.td_error[self.indicies] = np.abs(td_error)
-        exploit = (self.td_error[self.indicies] + self.init_td_error) / sum(self.td_error + self.init_td_error)
+        exploit = ((self.td_error[self.indicies] + self.init_td_error) / sum(self.td_error + self.init_td_error)) ** 5
         explore = self.cp * np.sqrt(2 * np.log(max(self.fit_count) + self.init_td_error) /
                                     (self.fit_count[self.indicies] + self.init_td_error))
         self.weight[self.indicies] = exploit + explore
