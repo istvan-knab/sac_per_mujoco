@@ -1,7 +1,6 @@
 import numpy as np
 import yaml
 import torch
-from torch.xpu import device
 from tqdm import tqdm
 import gymnasium as gym
 from collections import deque
