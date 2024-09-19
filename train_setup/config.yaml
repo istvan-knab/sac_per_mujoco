@@ -25,7 +25,7 @@ TAU : 0.04
 HIDDEN_LAYERS: 64
 
 #Memory
-TRAIN_MODE : "ucb"
+TRAIN_MODE : "simple"
 INIT_TD_ERROR: 100.0  #per
 INIT_WEIGHT : 0.0001    #per
 CP : 0.35            #ucb

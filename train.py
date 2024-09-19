@@ -38,7 +38,8 @@ def rl_loop():
     env = EnvWrapper(env, config)
     agent = SoftActorCritic(config, env)
     logger = Logger(env, config)
-    last_steps = deque([], maxlen=60)
+    last_steps = deque([], maxlen=30)
+    break_flag = False
     for episode in tqdm(range(config["EPISODES"]), desc='Training Process',
                         bar_format=logger.set_tqdm(), colour='white'):
         state = env.reset(config["SEED"])
@@ -58,7 +59,8 @@ def rl_loop():
             agent.memory.add_element(state, action, next_state, reward, done)
             state = next_state
             episode_reward += reward
-            critic_1_loss, critic_2_loss, actor_loss = agent.update_policy()
+            if not break_flag:
+                critic_1_loss, critic_2_loss, actor_loss = agent.update_policy()
             episode_critic_1_loss += critic_1_loss
             episode_critic_2_loss += critic_2_loss
             episode_actor_loss += actor_loss
@@ -67,8 +69,8 @@ def rl_loop():
         logger.step(episode_reward, losses[0], losses[1], losses[2], step, agent.temperature)
         break_flag = check_early_stopping(np.array(last_steps), config['EARLY_STOP'])
         agent.set_entropy()
-        if break_flag:
-            break
+        #if break_flag:
+            #break
 
     torch.save(agent.actor, "models" + "/" + str(logger.run_id) + ".pth")
 
