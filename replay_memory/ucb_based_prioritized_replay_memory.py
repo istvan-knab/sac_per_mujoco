@@ -64,6 +64,6 @@ class UCB_MEMORY:
         exploit = ((self.td_error[self.indicies] + self.init_td_error) / sum(self.td_error + self.init_td_error))
         explore = self.cp * np.sqrt(2 * np.log(max(self.fit_count) + self.init_td_error) /
                                     (self.fit_count[self.indicies] + self.init_td_error))
-        self.weight[self.indicies] = exploit ** 5 + explore
+        self.weight[self.indicies] = exploit + explore
     def __len__(self):
         return self.queue_length
