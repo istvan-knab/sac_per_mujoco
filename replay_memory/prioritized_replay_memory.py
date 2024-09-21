@@ -59,6 +59,6 @@ class PER:
         td_error = np.array(td_error.unsqueeze(0).detach().cpu().numpy().flatten())
         self.td_error[self.indicies] = np.abs(td_error)
         self.weight[self.indicies] = ((self.td_error[self.indicies] + self.init_td_error) /
-                                             sum(self.td_error + self.init_td_error))
+                                      sum(self.td_error + self.init_td_error))
     def __len__(self):
         return self.queue_length

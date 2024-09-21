@@ -1,5 +1,5 @@
 #Environment parameters
-ENVIRONMENT : "InvertedDoublePendulum-v5"
+ENVIRONMENT : "Pendulum-v1"
 RENDER : "no"
 RENDER_MODE : "human"
 NORMAL_ENV: ["Pendulum-v1", "InvertedPendulum-v5", "Pusher-v5"]
@@ -9,7 +9,7 @@ ACTION_SPACE: 0
 #Train Parameters
 EPISODES : 5000
 EARLY_STOP : 9300
-SEED : 68
+SEED : 42
 DEVICE : "cuda"
 
 #hyperparameters
@@ -26,6 +26,6 @@ HIDDEN_LAYERS: 64
 
 #Memory
 TRAIN_MODE : "ucb"
-INIT_TD_ERROR: 100.0  #per
-INIT_WEIGHT : 0.0001    #per
-CP : 0.35            #ucb
+INIT_TD_ERROR: 0.00000001   #per
+INIT_WEIGHT : 1.0           #per
+CP : 0.23                   #ucb
