@@ -38,7 +38,7 @@ def rl_loop():
     env = EnvWrapper(env, config)
     agent = SoftActorCritic(config, env)
     logger = Logger(env, config)
-    last_steps = deque([], maxlen=30)
+    last_steps = deque([], maxlen=15)
     break_flag = False
     for episode in tqdm(range(config["EPISODES"]), desc='Training Process',
                         bar_format=logger.set_tqdm(), colour='white'):

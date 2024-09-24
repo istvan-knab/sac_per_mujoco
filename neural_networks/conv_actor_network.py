@@ -5,18 +5,23 @@ from torch.distributions import Normal
 
 from train_setup.seed_all import seed_all
 
-class Actor(nn.Module):
+class ConvActor(nn.Module):
     def __init__(self, env, config, hidden_dim=128):
-        super(Actor, self).__init__()
+        super(ConvActor, self).__init__()
         self.device = config["DEVICE"]
-        self.fc1 = nn.Linear(env.observation_space.shape[0], hidden_dim)
+        # RGB input, so in_channels=3
+        self.conv1 = nn.Conv2d(in_channels=3, out_channels=32, kernel_size=8, stride=4)  # Conv layer 1
+        self.conv2 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=4, stride=2)  # Conv layer 2
+        self.conv3 = nn.Conv2d(in_channels=64, out_channels=64, kernel_size=3, stride=1) # Conv layer 3
+
+        # After convolutions, the output will be flattened and fed into fully connected layers.
+        # You will need to calculate the correct input size after convolutions.
+        self.fc1 = nn.Linear(64 * 8 * 8, hidden_dim)  # This size depends on the input image size.
         self.fc2 = nn.Linear(hidden_dim, hidden_dim)
         self.mean = nn.Linear(hidden_dim, env.action_space.shape[0])
         self.std = nn.Linear(hidden_dim, env.action_space.shape[0])
-        self.env = env
+
         self.reparam_noise = 1e-6
-        seed = 0
-        seed_all(seed, self.env)
 
         # Apply Xavier initialization to all layers
         nn.init.xavier_uniform_(self.fc1.weight)
@@ -31,14 +36,19 @@ class Actor(nn.Module):
 
         self.to(self.device)
 
-
     def forward(self, state):
-        state = state.to(self.device)
-        x = F.relu(self.fc1(state))
+        state = state.to(self.device).float() / 255.0
+        x = F.relu(self.conv1(state))  # Pass through conv layers
+        x = F.relu(self.conv2(x))
+        x = F.relu(self.conv3(x))
+
+        x = x.view(x.size(0), -1)  # Flatten the conv output
+        x = F.relu(self.fc1(x))  # Fully connected layers
         x = F.relu(self.fc2(x))
+
         mean = self.mean(x)
         std = self.std(x)
-        std = F.softplus(std) + 1e-6
+        std = F.softplus(std) + 1e-6  # Ensure std is positive
 
         return mean, std
 
