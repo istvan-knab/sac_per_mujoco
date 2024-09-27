@@ -3,6 +3,7 @@ import yaml
 import torch
 from tqdm import tqdm
 import gymnasium as gym
+from highway_env import utils
 from collections import deque
 
 from train_setup.seed_all import seed_all, test_seed
