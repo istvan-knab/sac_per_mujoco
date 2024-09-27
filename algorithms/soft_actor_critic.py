@@ -7,6 +7,8 @@ from replay_memory.prioritized_replay_memory import PER
 from replay_memory.ucb_based_prioritized_replay_memory import UCB_MEMORY
 from neural_networks.actor_nertwork import Actor
 from neural_networks.critic_network import Critic
+from neural_networks.conv_actor_network import ConvActor
+from neural_networks.conv_critic_network import ConvCritic
 from replay_memory.ucb_based_prioritized_replay_memory import UCB_MEMORY
 from train_setup.seed_all import seed_all
 
@@ -18,11 +20,18 @@ class SoftActorCritic:
         self.temperature = config["ENTROPY_START"]
         self.temperature_decay = (float(config["ENTROPY_START"] - config["ENTROPY_END"]) / config["EPISODES"])
         self.tau = config["TAU"]
-        self.actor = Actor(env, config, hidden_dim=config["HIDDEN_LAYERS"])
-        self.critic_1 = Critic(env, config, hidden_dim=config["HIDDEN_LAYERS"])
-        self.critic_2 = Critic(env, config, hidden_dim=config["HIDDEN_LAYERS"])
-        self.critic_1_target = Critic(env, config, hidden_dim=config["HIDDEN_LAYERS"])
-        self.critic_2_target = Critic(env, config, hidden_dim=config["HIDDEN_LAYERS"])
+        if config["ENVIRONMENT"] == "CarRacing-v2":
+            self.actor = ConvActor(env, config, hidden_dim=config["HIDDEN_LAYERS"])
+            self.critic_1 = ConvCritic(env, config, hidden_dim=config["HIDDEN_LAYERS"])
+            self.critic_2 = ConvCritic(env, config, hidden_dim=config["HIDDEN_LAYERS"])
+            self.critic_1_target = ConvCritic(env, config, hidden_dim=config["HIDDEN_LAYERS"])
+            self.critic_2_target = ConvCritic(env, config, hidden_dim=config["HIDDEN_LAYERS"])
+        else:
+            self.actor = Actor(env, config, hidden_dim=config["HIDDEN_LAYERS"])
+            self.critic_1 = Critic(env, config, hidden_dim=config["HIDDEN_LAYERS"])
+            self.critic_2 = Critic(env, config, hidden_dim=config["HIDDEN_LAYERS"])
+            self.critic_1_target = Critic(env, config, hidden_dim=config["HIDDEN_LAYERS"])
+            self.critic_2_target = Critic(env, config, hidden_dim=config["HIDDEN_LAYERS"])
         self.critic_1_target.load_state_dict(self.critic_1.state_dict())
         self.critic_2_target.load_state_dict(self.critic_2.state_dict())
         self.actor_optimizer = optim.Adam(self.actor.parameters(), lr=config["LR"])

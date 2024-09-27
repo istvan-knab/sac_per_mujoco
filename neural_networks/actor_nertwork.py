@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.distributions import Normal
-import numpy as np
 
 from train_setup.seed_all import seed_all
 

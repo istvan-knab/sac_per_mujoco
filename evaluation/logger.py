@@ -6,7 +6,8 @@ class Logger:
             project="KovariProductions/per-mujoco-sac",
             api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiI5ZGUzMWI0ZC01ZDIyLTQwNWQtODQzOS1mNzQ5NTA3YzdmOGUifQ==",
         )  # your credentials
-
+        self.run["sys/tags"].add([config["ENVIRONMENT"], "SAC", config["TRAIN_MODE"],
+                                  str(config["SEED"]), str(config["CP"])])
         self.run["algorithm"] = "SAC"
         self.run["environment"] = config["ENVIRONMENT"]
         self.run["EPISODES"] = config["EPISODES"]
@@ -22,6 +23,7 @@ class Logger:
         self.run["SEED"] = config["SEED"]
         self.run["ENTROPY_START"] = config["ENTROPY_START"]
         self.run["ENTROPY_END"] = config["ENTROPY_END"]
+        self.run["CP"] = config["CP"]
         self.run_id = self.run["sys/id"].fetch()
         self.start_training(config)
 

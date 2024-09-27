@@ -3,6 +3,7 @@ import yaml
 import torch
 from tqdm import tqdm
 import gymnasium as gym
+from highway_env import utils
 from collections import deque
 
 from train_setup.seed_all import seed_all, test_seed
@@ -38,7 +39,7 @@ def rl_loop():
     env = EnvWrapper(env, config)
     agent = SoftActorCritic(config, env)
     logger = Logger(env, config)
-    last_steps = deque([], maxlen=30)
+    last_steps = deque([], maxlen=15)
     break_flag = False
     for episode in tqdm(range(config["EPISODES"]), desc='Training Process',
                         bar_format=logger.set_tqdm(), colour='white'):
