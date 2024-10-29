@@ -3,9 +3,10 @@ from gymnasium import spaces
 import torch
 import numpy as np
 class EnvWrapper(gym.Wrapper):
-    def __init__(self, env, config):
+    def __init__(self, env, config, skip):
         gym.Wrapper.__init__(self, env)
         self.name = config["ENVIRONMENT"]
+        self._skip = skip
         if self.name in config["NORMAL_ENV"]:
             env.action_space = spaces.Box(low=-1.0, high=1.0, shape=env.action_space.shape, dtype=np.float32)
 

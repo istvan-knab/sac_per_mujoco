@@ -24,6 +24,7 @@ class Logger:
         self.run["ENTROPY_START"] = config["ENTROPY_START"]
         self.run["ENTROPY_END"] = config["ENTROPY_END"]
         self.run["CP"] = config["CP"]
+        self.run["group"] = str(config["SEED"])
         self.run_id = self.run["sys/id"].fetch()
         self.start_training(config)
 
@@ -31,6 +32,10 @@ class Logger:
     def start_training(self, config):
         print("Starting training------------------")
         print(f'Train Mode: {config["TRAIN_MODE"]}')
+        if config["TRAIN_MODE"] == "per":
+            print(f"f PER ALPHA : {config['PER_ALPHA']}")
+        elif config["TRAIN_MODE"] == "ucb":
+            print(f" CP : {config['CP']}")
         print(f'Environment: {config["ENVIRONMENT"]}')
         print(f'Neptune ID : {self.run_id}')
         print(f'Device : {config["DEVICE"]}')

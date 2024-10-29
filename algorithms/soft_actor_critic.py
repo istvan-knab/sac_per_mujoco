@@ -20,6 +20,7 @@ class SoftActorCritic:
         self.temperature = config["ENTROPY_START"]
         self.temperature_decay = (float(config["ENTROPY_START"] - config["ENTROPY_END"]) / config["EPISODES"])
         self.tau = config["TAU"]
+        self.clip = config["CLIP"]
         if config["ENVIRONMENT"] == "CarRacing-v2":
             self.actor = ConvActor(env, config, hidden_dim=config["HIDDEN_LAYERS"])
             self.critic_1 = ConvCritic(env, config, hidden_dim=config["HIDDEN_LAYERS"])
@@ -84,12 +85,12 @@ class SoftActorCritic:
 
         self.critic_1_optimizer.zero_grad()
         critic_1_loss.backward()
-        torch.nn.utils.clip_grad_norm_(self.critic_1.parameters(), max_norm=1.0)
+        torch.nn.utils.clip_grad_norm_(self.critic_1.parameters(), max_norm=self.clip)
         self.critic_1_optimizer.step()
 
         self.critic_2_optimizer.zero_grad()
         critic_2_loss.backward()
-        torch.nn.utils.clip_grad_norm_(self.critic_2.parameters(), max_norm=1.0)
+        torch.nn.utils.clip_grad_norm_(self.critic_2.parameters(), max_norm=self.clip)
         self.critic_2_optimizer.step()
 
         # Update Actor
@@ -101,7 +102,7 @@ class SoftActorCritic:
 
         self.actor_optimizer.zero_grad()
         actor_loss.backward()
-        torch.nn.utils.clip_grad_norm_(self.actor.parameters(), max_norm=1.0)
+        torch.nn.utils.clip_grad_norm_(self.actor.parameters(), max_norm=self.clip)
         self.actor_optimizer.step()
 
         for param, target_param in zip(self.critic_1.parameters(), self.critic_1_target.parameters()):

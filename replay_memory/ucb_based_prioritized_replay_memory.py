@@ -17,6 +17,7 @@ class UCB_MEMORY:
         self.reward = np.zeros(self.buffer_size)
         self.done = np.zeros([self.buffer_size])
         self.td_error = np.zeros(self.buffer_size)
+        self.per_alpha = config["PER_ALPHA"]
         self.fit_count = np.zeros(self.buffer_size)
         self.weight = np.zeros(self.buffer_size)
         self.queue_length = 0
@@ -48,7 +49,8 @@ class UCB_MEMORY:
 
 
     def sample(self):
-        self.indicies = np.random.choice(range(self.buffer_size), self.batch_size, p=self.weight / sum(self.weight))
+        self.indicies = np.random.choice(range(self.buffer_size), self.batch_size,
+                                         p=pow(self.weight,self.per_alpha) / sum(pow(self.weight,self.per_alpha)))
         state = torch.tensor(self.state[self.indicies], dtype=torch.float32).to(self.device)
         action = torch.tensor(self.action[self.indicies], dtype=torch.float32).to(self.device)
         next_state = torch.tensor(self.next_state[self.indicies], dtype=torch.float32).to(self.device)

@@ -7,13 +7,17 @@ from train_setup.seed_all import seed_all
 
 class Actor(nn.Module):
     def __init__(self, env, config, hidden_dim=128):
+        self.hidden_dim = hidden_dim
         super(Actor, self).__init__()
         self.device = config["DEVICE"]
         self.fc1 = nn.Linear(env.observation_space.shape[0], hidden_dim[0])
         self.fc2 = nn.Linear(hidden_dim[0], hidden_dim[1])
-        self.fc3 = nn.Linear(hidden_dim[1], hidden_dim[2])
-        self.mean = nn.Linear(hidden_dim[2], env.action_space.shape[0])
-        self.std = nn.Linear(hidden_dim[2], env.action_space.shape[0])
+        if len(hidden_dim) == 3:
+            self.fc3 = nn.Linear(hidden_dim[1], hidden_dim[2])
+            nn.init.xavier_uniform_(self.fc3.weight)
+            nn.init.zeros_(self.fc3.bias)
+        self.mean = nn.Linear(hidden_dim[-1], env.action_space.shape[0])
+        self.std = nn.Linear(hidden_dim[-1], env.action_space.shape[0])
         self.env = env
         self.reparam_noise = 1e-6
         seed = 0
@@ -22,13 +26,11 @@ class Actor(nn.Module):
         # Apply Xavier initialization to all layers
         nn.init.xavier_uniform_(self.fc1.weight)
         nn.init.xavier_uniform_(self.fc2.weight)
-        nn.init.xavier_uniform_(self.fc3.weight)
         nn.init.xavier_uniform_(self.mean.weight)
         nn.init.xavier_uniform_(self.std.weight)
         # Optional: Initialize biases to zero
         nn.init.zeros_(self.fc1.bias)
         nn.init.zeros_(self.fc2.bias)
-        nn.init.zeros_(self.fc3.bias)
         nn.init.zeros_(self.mean.bias)
         nn.init.zeros_(self.std.bias)
 
@@ -39,7 +41,8 @@ class Actor(nn.Module):
         state = state.to(self.device)
         x = F.relu(self.fc1(state))
         x = F.relu(self.fc2(x))
-        x = F.relu(self.fc3(x))
+        if len(self.hidden_dim) == 3:
+            x = F.relu(self.fc3(x))
         mean = self.mean(x)
         std = self.std(x)
         std = F.softplus(std) + 1e-6

@@ -31,15 +31,15 @@ def rl_loop():
     if config['RENDER'] == 'yes':
         env = gym.make(config["ENVIRONMENT"],render_mode = config["RENDER_MODE"])
     else:
-        env = gym.make(config["ENVIRONMENT"])
+        env = gym.make(config["ENVIRONMENT"], render_mode=None)
     config["DEVICE"] = select_device(config)
     seed_all(config['SEED'], env)
     config["INPUT_FEATURES"] = env.observation_space.shape[0]
     config["ACTION_SPACE"] = env.action_space.shape[0]
-    env = EnvWrapper(env, config)
+    env = EnvWrapper(env, config, skip=1)
     agent = SoftActorCritic(config, env)
     logger = Logger(env, config)
-    last_steps = deque([], maxlen=15)
+    last_steps = np.zeros(4)
     break_flag = False
     for episode in tqdm(range(config["EPISODES"]), desc='Training Process',
                         bar_format=logger.set_tqdm(), colour='white'):
@@ -66,7 +66,8 @@ def rl_loop():
             episode_critic_2_loss += critic_2_loss
             episode_actor_loss += actor_loss
             losses = [episode_critic_1_loss, episode_critic_2_loss, episode_actor_loss]
-        last_steps.append(episode_reward)
+        last_steps = np.roll(last_steps, -1)
+        last_steps[0] = reward
         logger.step(episode_reward, losses[0], losses[1], losses[2], step, agent.temperature)
         break_flag = check_early_stopping(np.array(last_steps), config['EARLY_STOP'])
         agent.set_entropy()
