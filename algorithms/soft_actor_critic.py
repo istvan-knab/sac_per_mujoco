@@ -80,8 +80,9 @@ class SoftActorCritic:
         td_error_1 = q1_target - q1
         td_error_2 = q2_target - q2
         mean_td_error = (td_error_1 + td_error_2) / 2
+        min_td_error = min(td_error_1, td_error_2)
         if self.config["TRAIN_MODE"] == "per" or self.config["TRAIN_MODE"] == "ucb":
-            self.memory.update_priorities(mean_td_error)
+            self.memory.update_priorities(min_td_error)
 
         self.critic_1_optimizer.zero_grad()
         critic_1_loss.backward()
