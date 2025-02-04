@@ -1,4 +1,0 @@
-1. Implement delta DEP
-2. Write the universal sh script which runs paralelly all instances
-3. compare 4 modes and evaluate results
-4. start writing
