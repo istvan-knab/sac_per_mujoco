@@ -53,7 +53,7 @@ __Observation Space:__ 4 continuous values:
 
 &emsp;θ̇ ∈ [-∞, ∞] (pole angular velocity)
 
-__Reward Function:__
+__Reward:__
 
 &emsp;r = 1.0 for every timestep the pole remains upright
 
@@ -77,17 +77,17 @@ __Observation Space:__ 11 continuous values:
 
 &emsp;ẋ (cart velocity)
 
-&emsp;θ̇₁ (first pendulum angular velocity)
+&emsp;θ̇₁ (first pendulum angular velocity)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;__Reward:__
 
 &emsp;θ̇₂ (second pendulum angular velocity)
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;r = height_penalty + angle_penalty + velocity_penalty
 
 &emsp;Force applied to cart
 
 &emsp;Joint reaction forces
 
-__Reward Function:__
 
-&emsp;r = height_penalty + angle_penalty + velocity_penalty
+
 
 
 ### HalfCheetah-v5
@@ -112,7 +112,7 @@ __Observation Space:__ 17 continuous values:
 
 &emsp;Height above ground (1)
 
-__Reward Function:__
+__Reward:__
 &emsp;r = forward_reward - control_cost
 
 
