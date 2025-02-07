@@ -1,4 +1,7 @@
 # Guided Experience Prioritization for Continous Reinforcement Learning :chart_with_upwards_trend:
+## Contributors :busts_in_silhouette:
+- István Gellért Knáb [![ORCID](https://img.shields.io/badge/ORCID-0009-0007-6906-3308-green.svg)](https://orcid.org/0009-0007-6906-3308)
+- Bálint Kővári       [![ORCID](https://img.shields.io/badge/ORCID-0000-0003-2178-2921-green.svg)](https://orcid.org/0000-0003-2178-2921)
 ## Short description :grey_question:
 
 In the control of robots, the importance of artificial intelligence today is indisputable.
