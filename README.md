@@ -123,7 +123,7 @@ __Reward Function:__
 <br>
 
 
-<img align="left" width="369" height="85" src="https://n120.njszt.hu/img/logo/HUN-REN-SZTAKI-logo.png">
+<img align="left" width="259" height="60" src="https://n120.njszt.hu/img/logo/HUN-REN-SZTAKI-logo.png">&emsp;&emsp;<img align="center" width="367" height="60" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTOxDZ7qR1tAq3oLAfpg6bB2lL_hAyUwIwWQ&s"><img align="right" width="259" height="60" src="https://www.bme.hu/sites/default/files/mediakit/bme_logo_nagy.jpg">
 
-<img align="right" width="369" height="100" src="https://www.bme.hu/sites/default/files/mediakit/bme_logo_nagy.jpg">
+
 
