@@ -1,7 +1,14 @@
 # Guided Experience Prioritization for Continous Reinforcement Learning :chart_with_upwards_trend:
 ## Contributors :busts_in_silhouette:
-- István Gellért Knáb ![ORCID](https://orcid.org/sites/default/files/images/orcid_16x16.png) [0009-0007-6906-3308](https://orcid.org/0009-0007-6906-3308)
-- Bálint Kővári       ![ORCID](https://orcid.org/sites/default/files/images/orcid_16x16.png) [0000-0003-2178-2921](https://orcid.org/0000-0003-2178-2921)
+
+ ### István Gellért Knáb
+ 
+[![Google Scholar](https://img.shields.io/badge/Scholar-Profile-blue?style=flat&logo=google-scholar)](https://scholar.google.com/citations?user=Qil3Q_wAAAAJ&hl=hu&oi=ao)&emsp;
+[![ResearchGate](https://img.shields.io/badge/ResearchGate-Profile-brightgreen?style=flat&logo=researchgate)](https://www.researchgate.net/profile/Istvan-Gellert-Knab?ev=hdr_xprf)&emsp;[![ORCID](https://orcid.org/sites/default/files/images/orcid_16x16.png)](https://orcid.org/0009-0007-6906-3308)
+### Bálint Kővári
+
+[![Google Scholar](https://img.shields.io/badge/Scholar-Profile-blue?style=flat&logo=google-scholar)](https://scholar.google.com/citations?user=WrtttXEAAAAJ&hl=hu&oi=ao)&emsp;
+[![ResearchGate](https://img.shields.io/badge/ResearchGate-Profile-brightgreen?style=flat&logo=researchgate)](https://www.researchgate.net/profile/Balint-Kovari-3)&emsp;[![ORCID](https://orcid.org/sites/default/files/images/orcid_16x16.png)](https://orcid.org/0000-0003-2178-2921)
 ## Short description :grey_question:
 
 In the control of robots, the importance of artificial intelligence today is indisputable.
