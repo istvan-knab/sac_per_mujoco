@@ -19,36 +19,108 @@ Previous research has already proven that there are more effective solutions tha
 ### Pendulum-v1
 <img align="right" width="300" height="300" src="https://gymnasium.farama.org/_images/pendulum.gif">
 
-Description
 The Pendulum environment is a classic control problem that involves learning to swing up and balance an underactuated pendulum. Unlike the standard pendulum problem where the goal is to simply keep the pendulum upright, this version requires the agent to learn both the swing-up and balancing behaviors.
-The system consists of a pendulum attached to a fixed point, with angular position θ and angular velocity ω. The agent can apply torque τ to the pendulum's pivot point. Due to gravity and the applied torque, the pendulum moves according to the following dynamics:
-System Dynamics
-The equations of motion for the pendulum are:
-- ml²θ̈ + bθ̇ + mgl sin(θ) = τ
+The system consists of a pendulum attached to a fixed point, with angular position θ and angular velocity ω. The agent can apply torque τ to the pendulum's pivot point. 
 
 __Action Space:__ The action space is continuous, represented by a single value:
-- τ ∈ [-2.0, 2.0] (applied torque)
 
-__The observation space:__ consists of 3 continuous values:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;__Reward Function:__
-- cos(θ) ∈ [-1, 1]&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;r= -(θ² + 0.1×θ̇² + 0.001×τ²)
-- sin(θ) ∈ [-1, 1]
-- θ̇ ∈ [-8, 8] (angular velocity)
+&emsp;τ ∈ [-2.0, 2.0] (applied torque)
+
+__The observation space:__ consists of 3 continuous values:&emsp;&emsp;&emsp;&emsp;&emsp;__Reward Function:__
+
+&emsp; cos(θ) ∈ [-1, 1]&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;r= -(θ² + 0.1×θ̇² + 0.001×τ²)
+
+&emsp; sin(θ) ∈ [-1, 1]
+
+&emsp; θ̇ ∈ [-8, 8] (angular velocity)
 
 ### InvertedPendulum-v5
 <img align="right" width="300" height="300" src="https://gymnasium.farama.org/_images/inverted_pendulum.gif">
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+A pole is attached by an unactuated joint to a cart, which moves along a frictionless track. The goal is to balance the pole upright by applying forces to the cart. Unlike Pendulum-v1, this system is underactuated with the force applied to the cart rather than directly to the pendulum joint.
+
+__Action Space:__ Continuous, represented by a single value:
+
+&emsp;F ∈ [-3.0, 3.0] (force applied to cart)
+
+__Observation Space:__ 4 continuous values:
+
+&emsp;x ∈ [-4.8, 4.8] (cart position)
+
+&emsp;θ ∈ [-0.418, 0.418] (pole angle)
+
+&emsp;ẋ ∈ [-∞, ∞] (cart velocity)
+
+&emsp;θ̇ ∈ [-∞, ∞] (pole angular velocity)
+
+__Reward Function:__
+
+&emsp;r = 1.0 for every timestep the pole remains upright
+
 
 ### InvertedDoublePendulum-v5
 <img align="right" width="300" height="300" src="https://gymnasium.farama.org/_images/inverted_double_pendulum.gif">
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+A double pendulum attached to a cart moving on a track. The goal is to balance both pendulums upright by applying forces to the cart. This creates a more complex control problem than the single inverted pendulum due to nonlinear dynamics.
+
+__Action Space:__ Continuous, single value:
+
+&emsp;F ∈ [-1.0, 1.0] (force applied to cart)
+
+__Observation Space:__ 11 continuous values:
+
+&emsp;x (cart position)
+
+&emsp;sin(θ₁), cos(θ₁) (first pendulum angle)
+
+&emsp;sin(θ₂), cos(θ₂) (second pendulum angle)
+
+&emsp;ẋ (cart velocity)
+
+&emsp;θ̇₁ (first pendulum angular velocity)
+
+&emsp;θ̇₂ (second pendulum angular velocity)
+
+&emsp;Force applied to cart
+
+&emsp;Joint reaction forces
+
+__Reward Function:__
+
+&emsp;r = height_penalty + angle_penalty + velocity_penalty
+
 
 ### HalfCheetah-v5
 <img align="right" width="300" height="300" src="https://github.com/istvan-knab/sac_per_mujoco/blob/main/models/pictures/half_cheetah.gif">
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+A 2D cheetah simulation with six actuated joints. The goal is to make the cheetah run forward as fast as possible. The system comprises a planar biped robot with torque control at each joint.
 
+__Action Space:__ Continuous, 6 values:
+
+&emsp;τ ∈ [-1, 1]⁶ (joint torques)
+
+&emsp;Control each joint: [hip, thigh, knee] × 2 legs
+
+__Observation Space:__ 17 continuous values:
+
+&emsp;Joint angles (6)
+
+&emsp;Joint velocities (6)
+
+&emsp;Root position (2)
+
+&emsp;Root velocity (2)
+
+&emsp;Height above ground (1)
+
+__Reward Function:__
+&emsp;r = forward_reward - control_cost
+
+
+&emsp;forward_reward = velocity_x
+&emsp;control_cost = 0.1 × ||actions||²
+
+
+<br>
 
 
 <img align="left" width="369" height="85" src="https://n120.njszt.hu/img/logo/HUN-REN-SZTAKI-logo.png">
