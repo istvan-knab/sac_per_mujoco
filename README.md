@@ -11,7 +11,9 @@
 [![ResearchGate](https://img.shields.io/badge/ResearchGate-Profile-brightgreen?style=flat&logo=researchgate)](https://www.researchgate.net/profile/Balint-Kovari-3)&emsp;[![ORCID](https://orcid.org/sites/default/files/images/orcid_16x16.png)](https://orcid.org/0000-0003-2178-2921)
 ## Short description :grey_question:
 
-In the control of robots, the importance of artificial intelligence today is indisputable.
+The computational duration required for training contemporary deep learning architectures frequently extends to multiple days of processing time. Given the correlation between temporal requirements, energy consumption, and their associated financial expenditures, the optimization and reduction of these resource-intensive parameters represents a critical challenge in the field of deep learning research.
+In the case of reinforcement learning, this includes unique methods such as sample prioritization, where the agent selects from the training samples generated during the process, focusing on those most worth incorporating to accelerate and stabilize convergence.
+Previous research has already proven that there are more effective solutions than uniform sampling, as not all samples carry the same amount of information. During sample prioritization, it is equally important to use the best samples while ensuring exploration, with the balance between the two largely depending on the difficulty of the environment and the nature of the action space. The following research presents a solution for continuous action space reinforcement learning agents, where both exploration and exploitation are integral components of the prioritization metric design. This approach accelerates convergence while mitigating unsuccessful training caused by getting stuck in initial local minima.
 
 ## Environments :deciduous_tree:
 ### Pendulum-v1
