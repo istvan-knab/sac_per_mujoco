@@ -26,7 +26,7 @@ __Action Space:__ The action space is continuous, represented by a single value:
 
 &emsp;τ ∈ [-2.0, 2.0] (applied torque)
 
-__The observation space:__ consists of 3 continuous values:&emsp;&emsp;&emsp;&emsp;__Reward:__
+__The observation space:__ consists of 3 continuous values:&emsp;&emsp;&emsp;__Reward:__
 
 &emsp; cos(θ) ∈ [-1, 1]&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;r= -(θ² + 0.1×θ̇² + 0.001×τ²)
 
