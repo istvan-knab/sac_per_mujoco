@@ -106,18 +106,18 @@ __Observation Space:__ 17 continuous values:
 
 &emsp;Joint velocities (6)
 
-&emsp;Root position (2)
-
-&emsp;Root velocity (2)
-
-&emsp;Height above ground (1)
-
-__Reward:__
+&emsp;Root position (2) 
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;__Reward:__
 &emsp;r = forward_reward - control_cost
 
+&emsp;Root velocity (2)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;forward_reward = velocity_x
 
-&emsp;forward_reward = velocity_x
-&emsp;control_cost = 0.1 × ||actions||²
+&emsp;Height above ground (1)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;control_cost = 0.1 × ||actions||²
+
+
+
+
+
 
 
 <br>
