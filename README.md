@@ -9,7 +9,7 @@
 
 [![Google Scholar](https://img.shields.io/badge/Scholar-Profile-blue?style=flat&logo=google-scholar)](https://scholar.google.com/citations?user=WrtttXEAAAAJ&hl=hu&oi=ao)&emsp;
 [![ResearchGate](https://img.shields.io/badge/ResearchGate-Profile-brightgreen?style=flat&logo=researchgate)](https://www.researchgate.net/profile/Balint-Kovari-3)&emsp;[![ORCID](https://orcid.org/sites/default/files/images/orcid_16x16.png)](https://orcid.org/0000-0003-2178-2921)
-## Short description :grey_question:
+## Short description :bookmark:
 
 The computational duration required for training contemporary deep learning architectures frequently extends to multiple days of processing time. Given the correlation between temporal requirements, energy consumption, and their associated financial expenditures, the optimization and reduction of these resource-intensive parameters represents a critical challenge in the field of deep learning research.
 In the case of reinforcement learning, this includes unique methods such as sample prioritization, where the agent selects from the training samples generated during the process, focusing on those most worth incorporating to accelerate and stabilize convergence.
